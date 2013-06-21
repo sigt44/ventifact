@@ -1,0 +1,155 @@
+#ifndef DEFINES_H
+#define DEFINES_H
+
+#define VENT_VERSION "0.80"
+
+#define VERTICAL 0
+#define HORIZONTAL 1
+
+#ifdef WINDOWS
+
+#define snprintf _snprintf
+
+#endif
+
+#define VENT_MAXPLAYERNAME 4
+#define VENT_MAXNAME 64
+#define VENT_MAXSCORES 5
+
+enum UNIT_DIRECTION {
+    D_UP = 0,
+    D_DOWN = 1,
+    D_LEFT = 2,
+    D_RIGHT = 3,
+    D_UPRIGHT = 4,
+    D_UPLEFT = 5,
+    D_DOWNRIGHT = 6,
+    D_DOWNLEFT = 7,
+    D_TOTAL = 8
+};
+
+enum VENT_AI_GROUP
+{
+    AI_MOVE_STATE = 1
+};
+
+enum VENT_ENTITY {
+    ENTITY_NONE = 0,
+    ENTITY_UNIT = 1,
+    ENTITY_BUILDING = 2,
+    ENTITY_TILE = 3,
+    ENTITY_BULLET = 4,
+    ENTITY_END = 5
+};
+
+enum VENT_UNITS {
+    UNIT_TANK = 0,
+    UNIT_INFANTRY = 1,
+    UNIT_AIR = 2,
+    UNIT_TOWER = 3,
+    UNIT_ENDTYPE = 4
+};
+
+enum VENT_LAYERS
+{
+    VL_GROUND = 0,
+    VL_VEHICLE = 1,
+    VL_TREE = 2,
+    VL_BUILDING = 3,
+    VL_AIR = 4,
+    VL_HUD = 5
+};
+
+enum VENT_WEAPONS
+{
+    WEAPON_PLASMA = 0,
+    WEAPON_PLASMA_WEAK = 1,
+    WEAPON_MISSILE = 2,
+    WEAPON_ROCKET = 3,
+    WEAPON_REPAIR = 4,
+    WEAPON_FLAME = 5,
+    WEAPON_MINE = 6,
+    VENT_TOTALWEAPONS = 7
+};
+
+enum VENT_WEAPONFIRE
+{
+    AMMO_UNLIMITED = -1,
+    AMMO_NONE = 0,
+    WEAPON_NOAMMO = 1,
+    WEAPON_REFIRE = 2,
+    WEAPON_FIRED = 3,
+    WEAPON_CANFIRE = 4
+};
+
+enum VENT_TEAMS
+{
+    TEAM_PLAYER = 0,
+    TEAM_1 = 1,
+    TEAM_END = 2
+};
+
+enum VENT_AI_STATES
+{
+    VAI_NONE = 0,
+    VAI_ATTACKPLAYER = 1,
+    VAI_ATTACKBUILDING = 2,
+    VAI_DEFENDAREA = 3,
+    VAI_ATTACKUNIT = 4,
+    VAI_BUYCITADEL = 5,
+    VAI_DEFENDPLAYER = 6,
+    VAI_PATROL = 7,
+    VAI_SIDE = 8,
+    VAI_TOTALAI = 9
+};
+
+enum VENT_AI_DIFFICULTY
+{
+    AI_DIFF_NONE = 0,
+    AI_DIFF_EASY = 1,
+    AI_DIFF_MEDIUM = 2,
+    AI_DIFF_HARD = 3
+};
+
+enum VENT_TILE_GRAPHICTYPES
+{
+    TILEG_NULL = 0,
+    TILEG_DECOR = 1,
+    TILEG_WATER = 2,
+    TILEG_CITADELBASE = 3,
+    TILEG_BUILDINGBASE = 4,
+    TILEG_WALL_H = 5,
+    TILEG_ROAD_H = 6,
+    TILEG_ROAD_CUL = 7,
+    TILEG_GRASS = 8,
+    TILEG_SNOW = 9,
+    TILEG_SAND = 10,
+    TILEG_CUSTOM = 11,
+    TILEG_TOTALGRAPHICTYPES = 12
+};
+
+enum VENT_TILE_TYPES
+{
+    TILE_NULL = 0,
+    TILE_DECOR = 1,
+    TILE_CITADELBASE = 2,
+    TILE_BUILDINGBASE = 3,
+    TILE_WATER = 4,
+    TILE_GRASS = 5,
+    TILE_SNOW = 6,
+    TILE_SAND = 7,
+    TILE_CUSTOM = 8,
+    TILE_ENDTYPE = 9
+};
+
+enum VENT_BUILDINGS
+{
+    BUILDING_CITADEL = 0,
+    BUILDING_POWER = 1,
+    BUILDING_TANK = 2,
+    BUILDING_AIR = 3,
+    BUILDING_INFANTRY = 4,
+    BUILDING_TOTAL = 5
+};
+
+#endif

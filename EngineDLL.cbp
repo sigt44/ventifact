@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="EngineDLL" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Linux">
+				<Option output="./bin/Engine.so" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="./bin" />
+				<Option object_output="obj/Linux/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-Wall -Wextra -Wno-unused-variable -fsingle-precision-constant" />
+					<Add option="-DMEM_TRACK" />
+					<Add option="-DMEM_PRINTF" />
+					<Add option="-DMEM_PRINTF_V_" />
+					<Add option="-DMEM_FILE_V_" />
+					<Add option="-DMEM_FILE" />
+					<Add option="-DNO_LOG_" />
+					<Add option="-DLINUX" />
+					<Add option="-DSCREEN_BIT_32" />
+				</Compiler>
+				<Linker>
+					<Add library="SDL" />
+					<Add library="SDL_mixer" />
+					<Add library="SDL_image" />
+					<Add library="SDL_ttf" />
+				</Linker>
+			</Target>
+			<Target title="GP2X">
+				<Option output="../linuxGP2Xfiles/lib/libEngineGP2X.a" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="" />
+				<Option object_output="obj/GP2X" />
+				<Option type="2" />
+				<Option compiler="gp2xarmlinux" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-DGP2X" />
+					<Add option="-DMEM_TRACK" />
+					<Add option="-DMEM_FILE" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL -lSDL_image -lSDL_mixer -lsmpeg -lpthread -lSDL_ttf -lSDL -lpng -ljpeg -lmad -lfreetype -lz -lm -msoft-float" />
+				</Linker>
+			</Target>
+			<Target title="DINGOO">
+				<Option output="./bin/libEngineDingoo.a" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="" />
+				<Option object_output="obj/Dingoo/" />
+				<Option type="2" />
+				<Option compiler="mipsdingoo" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-O3 -fPIC -mfloat-abi=softfp -ffast-math -fsingle-precision-constant" />
+					<Add option="-DMEM_TRACK_" />
+					<Add option="-DNO_LOG" />
+					<Add option="-DDINGOO" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL -lSDL_ttf -lSDL_image -msoft-float" />
+				</Linker>
+			</Target>
+			<Target title="LinuxStatic">
+				<Option output="./bin/libVentEngine-Linux.a" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="" />
+				<Option object_output="obj/LinuxStatic/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-g" />
+					<Add option="-DMEM_TRACK" />
+					<Add option="-DMEM_PRINTF" />
+					<Add option="-DMEM_PRINTF_V_" />
+					<Add option="-DMEM_FILE_V_" />
+					<Add option="-DMEM_FILE_" />
+					<Add option="-DNO_LOG_" />
+					<Add option="-DLINUX" />
+					<Add option="-DSCREEN_BIT_32" />
+					<Add directory="/home/l449/Programming/Engine/engineSource" />
+				</Compiler>
+				<Linker>
+					<Add library="SDL" />
+					<Add library="SDL_mixer" />
+					<Add library="SDL_image" />
+					<Add library="SDL_ttf" />
+				</Linker>
+			</Target>
+			<Target title="PandoraStatic">
+				<Option output="./bin/libVentEngine-Pandora.a" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="" />
+				<Option object_output="obj/Pandora/" />
+				<Option type="2" />
+				<Option compiler="pandora" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O3 -mcpu=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp -ffast-math -fsingle-precision-constant" />
+					<Add option="-DMEM_TRACK_" />
+					<Add option="-DMEM_PRINTF_" />
+					<Add option="-DMEM_FILE_" />
+					<Add option="-DNO_LOG_" />
+					<Add option="-DPANDORA" />
+					<Add option="-DSCREEN_BIT_16" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL -lSDL_ttf -lSDL_image -lSDL_mixer -msoft-float" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="engineSource/BaseState.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/BaseState.h" />
+		<Unit filename="engineSource/Camera.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Camera.h" />
+		<Unit filename="engineSource/Collision.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Collision.h" />
+		<Unit filename="engineSource/Common/Fuzzy/FuzzyLV.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Common/Fuzzy/FuzzyLV.h" />
+		<Unit filename="engineSource/Common/Fuzzy/FuzzyManager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Common/Fuzzy/FuzzyManager.h" />
+		<Unit filename="engineSource/Common/Fuzzy/FuzzySet.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Common/Fuzzy/FuzzySet.h" />
+		<Unit filename="engineSource/Common/HashTable.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Common/HashTable.h" />
+		<Unit filename="engineSource/Common/List.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Common/List.h" />
+		<Unit filename="engineSource/Common/ListWatcher.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Common/ListWatcher.h" />
+		<Unit filename="engineSource/Controls.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Controls.h" />
+		<Unit filename="engineSource/DataStruct.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/DataStruct.h" />
+		<Unit filename="engineSource/File.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/File.h" />
+		<Unit filename="engineSource/Flag.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Flag.h" />
+		<Unit filename="engineSource/Font.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Font.h" />
+		<Unit filename="engineSource/GUI/Button.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/Button.h" />
+		<Unit filename="engineSource/GUI/ButtonChain.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/ButtonChain.h" />
+		<Unit filename="engineSource/GUI/ButtonChooser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/ButtonChooser.h" />
+		<Unit filename="engineSource/GUI/ButtonFunc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/ButtonFunc.h" />
+		<Unit filename="engineSource/GUI/ButtonPaths.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/ButtonPaths.h" />
+		<Unit filename="engineSource/GUI/ButtonScroll.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/ButtonScroll.h" />
+		<Unit filename="engineSource/GUI/Pointer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/Pointer.h" />
+		<Unit filename="engineSource/GUI/Spine.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/Spine.h" />
+		<Unit filename="engineSource/GUI/SpineEntity.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/SpineEntity.h" />
+		<Unit filename="engineSource/GUI/TextBox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/TextBox.h" />
+		<Unit filename="engineSource/GUI/TextInput.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/TextInput.h" />
+		<Unit filename="engineSource/GUI/UI_Defines.h" />
+		<Unit filename="engineSource/GUI/UiShape.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/GUI/UiShape.h" />
+		<Unit filename="engineSource/Graphics/Animation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/Animation.h" />
+		<Unit filename="engineSource/Graphics/DrawManager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/DrawManager.h" />
+		<Unit filename="engineSource/Graphics/Effects/Blink.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/Effects/Blink.h" />
+		<Unit filename="engineSource/Graphics/Effects/FadeIn.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/Effects/FadeIn.h" />
+		<Unit filename="engineSource/Graphics/Effects/FadeOut.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/Effects/FadeOut.h" />
+		<Unit filename="engineSource/Graphics/Effects/Slide.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/Effects/Slide.h" />
+		<Unit filename="engineSource/Graphics/Graphics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/Graphics.h" />
+		<Unit filename="engineSource/Graphics/Pixel.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/Pixel.h" />
+		<Unit filename="engineSource/Graphics/PixelManager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/PixelManager.h" />
+		<Unit filename="engineSource/Graphics/Sprite.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/Sprite.h" />
+		<Unit filename="engineSource/Graphics/SpriteEffects.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/SpriteEffects.h" />
+		<Unit filename="engineSource/Graphics/SpriteManager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/SpriteManager.h" />
+		<Unit filename="engineSource/Graphics/Surface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/Surface.h" />
+		<Unit filename="engineSource/Graphics/SurfaceManager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphics/SurfaceManager.h" />
+		<Unit filename="engineSource/Graphs/Edge.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphs/Edge.h" />
+		<Unit filename="engineSource/Graphs/Graph.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphs/Graph.h" />
+		<Unit filename="engineSource/Graphs/Node.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphs/Node.h" />
+		<Unit filename="engineSource/Graphs/Search/DijkstraSearch.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Graphs/Search/DijkstraSearch.h" />
+		<Unit filename="engineSource/Kernel/Kernel.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Kernel/Kernel.h" />
+		<Unit filename="engineSource/Kernel/Kernel_Init.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Kernel/Kernel_Init.h" />
+		<Unit filename="engineSource/Kernel/Kernel_State.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Kernel/Kernel_State.h" />
+		<Unit filename="engineSource/Maths.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Maths.h" />
+		<Unit filename="engineSource/Memory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Memory.h" />
+		<Unit filename="engineSource/RK4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/RK4.h" />
+		<Unit filename="engineSource/Screenshot.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Screenshot.h" />
+		<Unit filename="engineSource/Sound.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Sound.h" />
+		<Unit filename="engineSource/Time/Fps.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Time/Fps.h" />
+		<Unit filename="engineSource/Time/Timer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Time/Timer.h" />
+		<Unit filename="engineSource/Vector2D.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Vector2D.h" />
+		<Unit filename="engineSource/Vector2DInt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="engineSource/Vector2DInt.h" />
+		<Unit filename="engineSource/keyTest.h" />
+		<Unit filename="engineSource/main2.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

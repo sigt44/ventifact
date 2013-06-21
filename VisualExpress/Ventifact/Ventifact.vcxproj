@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8E70414B-1E8F-4C11-B38E-A9D7A4BC97FA}</ProjectGuid>
+    <RootNamespace>Ventifact</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\engineSource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\engineSource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai.c" />
+    <ClCompile Include="..\..\ventifactSource\Ai\AiScan.c" />
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai_Building.c" />
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai_Side.c" />
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai_State.c" />
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai_Steering.c" />
+    <ClCompile Include="..\..\ventifactSource\Ai\Units\Ai_UnitAttack.c" />
+    <ClCompile Include="..\..\ventifactSource\Ai\Units\Ai_UnitFunction.c" />
+    <ClCompile Include="..\..\ventifactSource\Ai\Units\Ai_UnitMove.c" />
+    <ClCompile Include="..\..\ventifactSource\Buildings\BuildingBar.c" />
+    <ClCompile Include="..\..\ventifactSource\Buildings\Buildings.c" />
+    <ClCompile Include="..\..\ventifactSource\Bullets.c" />
+    <ClCompile Include="..\..\ventifactSource\Bullet_Attributes.c" />
+    <ClCompile Include="..\..\ventifactSource\Campaign.c" />
+    <ClCompile Include="..\..\ventifactSource\CampaignScores.c" />
+    <ClCompile Include="..\..\ventifactSource\Config.c" />
+    <ClCompile Include="..\..\ventifactSource\ControlMap.c" />
+    <ClCompile Include="..\..\ventifactSource\Editor\LevelEditor.c" />
+    <ClCompile Include="..\..\ventifactSource\Editor\LevelMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Editor\MiscMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Editor\NodeMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Editor\ShortcutMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Editor\SupplyMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Editor\TileMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Effects.c" />
+    <ClCompile Include="..\..\ventifactSource\Game\HUD.c" />
+    <ClCompile Include="..\..\ventifactSource\Game\Rules.c" />
+    <ClCompile Include="..\..\ventifactSource\Game\Sides.c" />
+    <ClCompile Include="..\..\ventifactSource\Game\State.c" />
+    <ClCompile Include="..\..\ventifactSource\Game\Stats.c" />
+    <ClCompile Include="..\..\ventifactSource\Game\UnitMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Game\VentGame.c" />
+    <ClCompile Include="..\..\ventifactSource\HealthBar.c" />
+    <ClCompile Include="..\..\ventifactSource\Images.c" />
+    <ClCompile Include="..\..\ventifactSource\Level\Level.c" />
+    <ClCompile Include="..\..\ventifactSource\Level\LevelFile.c" />
+    <ClCompile Include="..\..\ventifactSource\Level\Sector.c" />
+    <ClCompile Include="..\..\ventifactSource\Level\Tiles.c" />
+    <ClCompile Include="..\..\ventifactSource\main.c" />
+    <ClCompile Include="..\..\ventifactSource\Menus\ControlMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Menus\GameMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Menus\MainMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Menus\MenuAttributes.c" />
+    <ClCompile Include="..\..\ventifactSource\Menus\OptionsMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Menus\UpgradeMenu.c" />
+    <ClCompile Include="..\..\ventifactSource\Options.c" />
+    <ClCompile Include="..\..\ventifactSource\Player.c" />
+    <ClCompile Include="..\..\ventifactSource\Sounds.c" />
+    <ClCompile Include="..\..\ventifactSource\Target.c" />
+    <ClCompile Include="..\..\ventifactSource\Units\Attributes.c" />
+    <ClCompile Include="..\..\ventifactSource\Units\Supply.c" />
+    <ClCompile Include="..\..\ventifactSource\Units\Units.c" />
+    <ClCompile Include="..\..\ventifactSource\Weapon.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai.h" />
+    <ClInclude Include="..\..\ventifactSource\Ai\AiScan.h" />
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai_Building.h" />
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai_Side.h" />
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai_State.h" />
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai_Steering.h" />
+    <ClInclude Include="..\..\ventifactSource\Ai\Units\Ai_UnitAttack.h" />
+    <ClInclude Include="..\..\ventifactSource\Ai\Units\Ai_UnitFunction.h" />
+    <ClInclude Include="..\..\ventifactSource\Ai\Units\Ai_UnitMove.h" />
+    <ClInclude Include="..\..\ventifactSource\Buildings\BuildingBar.h" />
+    <ClInclude Include="..\..\ventifactSource\Buildings\Buildings.h" />
+    <ClInclude Include="..\..\ventifactSource\Bullets.h" />
+    <ClInclude Include="..\..\ventifactSource\Bullet_Attributes.h" />
+    <ClInclude Include="..\..\ventifactSource\Campaign.h" />
+    <ClInclude Include="..\..\ventifactSource\CampaignScores.h" />
+    <ClInclude Include="..\..\ventifactSource\Config.h" />
+    <ClInclude Include="..\..\ventifactSource\ControlMap.h" />
+    <ClInclude Include="..\..\ventifactSource\Defines.h" />
+    <ClInclude Include="..\..\ventifactSource\Editor\LevelEditor.h" />
+    <ClInclude Include="..\..\ventifactSource\Editor\LevelMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Editor\MiscMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Editor\NodeMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Editor\ShortcutMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Editor\SupplyMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Editor\TileMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Effects.h" />
+    <ClInclude Include="..\..\ventifactSource\Game\HUD.h" />
+    <ClInclude Include="..\..\ventifactSource\Game\Rules.h" />
+    <ClInclude Include="..\..\ventifactSource\Game\Sides.h" />
+    <ClInclude Include="..\..\ventifactSource\Game\State.h" />
+    <ClInclude Include="..\..\ventifactSource\Game\Stats.h" />
+    <ClInclude Include="..\..\ventifactSource\Game\UnitMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Game\VentGame.h" />
+    <ClInclude Include="..\..\ventifactSource\HealthBar.h" />
+    <ClInclude Include="..\..\ventifactSource\Images.h" />
+    <ClInclude Include="..\..\ventifactSource\Level\Level.h" />
+    <ClInclude Include="..\..\ventifactSource\Level\LevelFile.h" />
+    <ClInclude Include="..\..\ventifactSource\Level\Sector.h" />
+    <ClInclude Include="..\..\ventifactSource\Level\Tiles.h" />
+    <ClInclude Include="..\..\ventifactSource\Menus\ControlMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Menus\GameMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Menus\MainMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Menus\MenuAttributes.h" />
+    <ClInclude Include="..\..\ventifactSource\Menus\OptionsMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Menus\UpgradeMenu.h" />
+    <ClInclude Include="..\..\ventifactSource\Options.h" />
+    <ClInclude Include="..\..\ventifactSource\Player.h" />
+    <ClInclude Include="..\..\ventifactSource\Sounds.h" />
+    <ClInclude Include="..\..\ventifactSource\Target.h" />
+    <ClInclude Include="..\..\ventifactSource\Units\Attributes.h" />
+    <ClInclude Include="..\..\ventifactSource\Units\Supply.h" />
+    <ClInclude Include="..\..\ventifactSource\Units\Units.h" />
+    <ClInclude Include="..\..\ventifactSource\Weapon.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

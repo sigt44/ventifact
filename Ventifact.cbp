@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Ventifact" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="WIN32">
+				<Option output="bin/WIN32/Ventifact" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin" />
+				<Option object_output="./obj/WIN32/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-pg" />
+					<Add option="-DWINDOWS" />
+					<Add option="-DSOUNDS" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg" />
+					<Add option="-pg -lgmon" />
+					<Add option="-lmingw32 -lSDLmain -lSDL -mwindows" />
+				</Linker>
+			</Target>
+			<Target title="GP2X">
+				<Option output="bin/VentifactGP2X.gpe" prefix_auto="0" extension_auto="0" />
+				<Option object_output="./objs/GP2X" />
+				<Option type="0" />
+				<Option compiler="gp2xarmlinux" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-DSOUNDS" />
+					<Add option="-DGP2X" />
+				</Compiler>
+				<Linker>
+					<Add option="-static -lEngineGP2X -lSDL -lSDL_image -lSDL_mixer -lsmpeg -lpthread -lSDL_ttf -lSDL -lpng -ljpeg -lmad -lfreetype -lz -lm -msoft-float" />
+				</Linker>
+			</Target>
+			<Target title="LINUX">
+				<Option output="bin/ventifact-linux" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="./bin" />
+				<Option object_output="./objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-Wall -Wextra -Wno-unused-variable -fsingle-precision-constant" />
+					<Add option="-DSOUNDS" />
+					<Add option="-DLINUX" />
+					<Add option="-DSCREEN_BIT_32" />
+					<Add directory="./ventifactSource" />
+					<Add directory="./engineSource" />
+				</Compiler>
+				<Linker>
+					<Add library="./bin/libVentEngine-Linux.a" />
+					<Add library="SDL" />
+					<Add library="SDL_ttf" />
+					<Add library="SDL_image" />
+					<Add library="SDL_gfx" />
+					<Add library="SDL_mixer" />
+				</Linker>
+			</Target>
+			<Target title="DINGOO">
+				<Option output="bin/VentifactDingoo" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="./bin" />
+				<Option object_output="./objs/Dingoo" />
+				<Option type="0" />
+				<Option compiler="mipsdingoo" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-DDINGOO" />
+					<Add option="-DSOUNDS" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL_mixer -lEngineDingoo" />
+				</Linker>
+			</Target>
+			<Target title="DINGOOSTATIC">
+				<Option output="bin/VentifactDingooStatic" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="./bin" />
+				<Option object_output="./objs/Dingoo" />
+				<Option type="0" />
+				<Option compiler="mipsdingoo" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-O3 -fPIC -mfloat-abi=softfp -ffast-math -fsingle-precision-constant" />
+					<Add option="-DDINGOO" />
+					<Add option="-DSOUNDS" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL_mixer -lSDL_ttf -lSDL_image -lSDL -lm -msoft-float" />
+					<Add library="/home/l449/Programming/Engine/bin/libEngineDingoo.a" />
+				</Linker>
+			</Target>
+			<Target title="PANDORASTATIC">
+				<Option output="bin/ventifact-pandora" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="./bin" />
+				<Option object_output="./obj/Pandora" />
+				<Option type="0" />
+				<Option compiler="pandora" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-msoft-float -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp" />
+					<Add option="-DPANDORA" />
+					<Add option="-DSOUNDS" />
+					<Add option="-DSCREEN_BIT_16" />
+					<Add directory="/home/l449/Programming/Engine/engineSource" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL -lSDL_mixer -lSDL_ttf -lSDL_image  -lm -msoft-float" />
+					<Add library="/home/l449/Programming/Engine/bin/libVentEngine-Pandora.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add directory="/home/l449/Programming/Engine/source" />
+		</Compiler>
+		<Unit filename="ventifactSource/Ai/Ai.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Ai/Ai.h" />
+		<Unit filename="ventifactSource/Ai/AiScan.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Ai/AiScan.h" />
+		<Unit filename="ventifactSource/Ai/Ai_Building.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Ai/Ai_Building.h" />
+		<Unit filename="ventifactSource/Ai/Ai_Side.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Ai/Ai_Side.h" />
+		<Unit filename="ventifactSource/Ai/Ai_State.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Ai/Ai_State.h" />
+		<Unit filename="ventifactSource/Ai/Ai_Steering.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Ai/Ai_Steering.h" />
+		<Unit filename="ventifactSource/Ai/Units/Ai_UnitAttack.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Ai/Units/Ai_UnitAttack.h" />
+		<Unit filename="ventifactSource/Ai/Units/Ai_UnitFunction.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Ai/Units/Ai_UnitFunction.h" />
+		<Unit filename="ventifactSource/Ai/Units/Ai_UnitMove.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Ai/Units/Ai_UnitMove.h" />
+		<Unit filename="ventifactSource/Buildings/BuildingBar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Buildings/BuildingBar.h" />
+		<Unit filename="ventifactSource/Buildings/Buildings.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Buildings/Buildings.h" />
+		<Unit filename="ventifactSource/Bullet_Attributes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Bullet_Attributes.h" />
+		<Unit filename="ventifactSource/Bullets.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Bullets.h" />
+		<Unit filename="ventifactSource/Campaign.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Campaign.h" />
+		<Unit filename="ventifactSource/CampaignScores.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/CampaignScores.h" />
+		<Unit filename="ventifactSource/Config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Config.h" />
+		<Unit filename="ventifactSource/ControlMap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/ControlMap.h" />
+		<Unit filename="ventifactSource/Defines.h" />
+		<Unit filename="ventifactSource/Editor/LevelEditor.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Editor/LevelEditor.h" />
+		<Unit filename="ventifactSource/Editor/LevelMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Editor/LevelMenu.h" />
+		<Unit filename="ventifactSource/Editor/MiscMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Editor/MiscMenu.h" />
+		<Unit filename="ventifactSource/Editor/NodeMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Editor/NodeMenu.h" />
+		<Unit filename="ventifactSource/Editor/ShortcutMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Editor/ShortcutMenu.h" />
+		<Unit filename="ventifactSource/Editor/SupplyMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Editor/SupplyMenu.h" />
+		<Unit filename="ventifactSource/Editor/TileMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Editor/TileMenu.h" />
+		<Unit filename="ventifactSource/Effects.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Effects.h" />
+		<Unit filename="ventifactSource/Game/HUD.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Game/HUD.h" />
+		<Unit filename="ventifactSource/Game/Rules.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Game/Rules.h" />
+		<Unit filename="ventifactSource/Game/Sides.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Game/Sides.h" />
+		<Unit filename="ventifactSource/Game/State.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Game/State.h" />
+		<Unit filename="ventifactSource/Game/Stats.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Game/Stats.h" />
+		<Unit filename="ventifactSource/Game/UnitMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Game/UnitMenu.h" />
+		<Unit filename="ventifactSource/Game/VentGame.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Game/VentGame.h" />
+		<Unit filename="ventifactSource/HealthBar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/HealthBar.h" />
+		<Unit filename="ventifactSource/Images.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Images.h" />
+		<Unit filename="ventifactSource/Level/Level.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Level/Level.h" />
+		<Unit filename="ventifactSource/Level/LevelFile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Level/LevelFile.h" />
+		<Unit filename="ventifactSource/Level/Sector.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Level/Sector.h" />
+		<Unit filename="ventifactSource/Level/Tiles.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Level/Tiles.h" />
+		<Unit filename="ventifactSource/Menus/ControlMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Menus/ControlMenu.h" />
+		<Unit filename="ventifactSource/Menus/GameMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Menus/GameMenu.h" />
+		<Unit filename="ventifactSource/Menus/MainMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Menus/MainMenu.h" />
+		<Unit filename="ventifactSource/Menus/MenuAttributes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Menus/MenuAttributes.h" />
+		<Unit filename="ventifactSource/Menus/OptionsMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Menus/OptionsMenu.h" />
+		<Unit filename="ventifactSource/Menus/UpgradeMenu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Menus/UpgradeMenu.h" />
+		<Unit filename="ventifactSource/Options.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Options.h" />
+		<Unit filename="ventifactSource/Player.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Player.h" />
+		<Unit filename="ventifactSource/Sounds.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Sounds.h" />
+		<Unit filename="ventifactSource/Target.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Target.h" />
+		<Unit filename="ventifactSource/Units/Attributes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Units/Attributes.h" />
+		<Unit filename="ventifactSource/Units/Supply.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Units/Supply.h" />
+		<Unit filename="ventifactSource/Units/Units.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Units/Units.h" />
+		<Unit filename="ventifactSource/Weapon.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ventifactSource/Weapon.h" />
+		<Unit filename="ventifactSource/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Ai">
+      <UniqueIdentifier>{d64aa1ec-8174-4c44-88f9-73a5278d70b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Ai\Units">
+      <UniqueIdentifier>{1ba50ca7-f365-41f0-bd92-22a622e1d1c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Buildings">
+      <UniqueIdentifier>{e8506ac9-e5d2-48e1-9a8c-f5885bbb7f3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor">
+      <UniqueIdentifier>{75d8b108-7ea0-416d-ad40-2b5914b692e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{b3a38d48-3412-4cc5-99c1-8c7b077213cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Level">
+      <UniqueIdentifier>{c6d098d2-5d1a-4c29-89bd-0afbf0e097aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Menus">
+      <UniqueIdentifier>{55d83dbe-6413-43a7-a2fb-1792c16ecb63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Units">
+      <UniqueIdentifier>{99f1f25a-d570-4d7b-9db6-6c17a1565981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Ai">
+      <UniqueIdentifier>{dba38465-b193-4287-b1f8-cca48f3bcc15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Buildings">
+      <UniqueIdentifier>{b81c7929-9ca6-4966-a008-4edad2e82e15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Editor">
+      <UniqueIdentifier>{3718ad50-cbff-4e00-9e01-0f1e89a94f59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{e960bc30-97c9-45ad-b350-d653cdffc837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Level">
+      <UniqueIdentifier>{87a87e4e-f456-4af9-8f96-7f2830a8fe16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Units">
+      <UniqueIdentifier>{42d07299-52db-48e9-951a-9112283c3676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Menus">
+      <UniqueIdentifier>{b7f84e1c-5c80-49ab-858a-404033147cd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Ai\Units">
+      <UniqueIdentifier>{6b5c4f2d-8a28-4995-b238-42a3ae7b2de2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ventifactSource\Bullet_Attributes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Bullets.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Campaign.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\CampaignScores.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Config.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\ControlMap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Effects.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\HealthBar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Images.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Options.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Player.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Sounds.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Target.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Weapon.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai.c">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai_Building.c">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai_Side.c">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai_State.c">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Ai\Ai_Steering.c">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Ai\AiScan.c">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Ai\Units\Ai_UnitAttack.c">
+      <Filter>Source Files\Ai\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Ai\Units\Ai_UnitFunction.c">
+      <Filter>Source Files\Ai\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Ai\Units\Ai_UnitMove.c">
+      <Filter>Source Files\Ai\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Units\Attributes.c">
+      <Filter>Source Files\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Units\Supply.c">
+      <Filter>Source Files\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Units\Units.c">
+      <Filter>Source Files\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Menus\ControlMenu.c">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Menus\GameMenu.c">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Menus\MainMenu.c">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Menus\MenuAttributes.c">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Menus\OptionsMenu.c">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Menus\UpgradeMenu.c">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Level\Level.c">
+      <Filter>Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Level\LevelFile.c">
+      <Filter>Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Level\Sector.c">
+      <Filter>Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Level\Tiles.c">
+      <Filter>Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Game\HUD.c">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Game\Rules.c">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Game\Sides.c">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Game\State.c">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Game\Stats.c">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Game\UnitMenu.c">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Game\VentGame.c">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Editor\LevelEditor.c">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Editor\LevelMenu.c">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Editor\MiscMenu.c">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Editor\NodeMenu.c">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Editor\ShortcutMenu.c">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Editor\SupplyMenu.c">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Editor\TileMenu.c">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Buildings\BuildingBar.c">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ventifactSource\Buildings\Buildings.c">
+      <Filter>Source Files\Buildings</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ventifactSource\Bullet_Attributes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Bullets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Campaign.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\CampaignScores.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\ControlMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Effects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\HealthBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Images.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Options.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Sounds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Target.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Weapon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Units\Attributes.h">
+      <Filter>Header Files\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Units\Supply.h">
+      <Filter>Header Files\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Units\Units.h">
+      <Filter>Header Files\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Menus\ControlMenu.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Menus\GameMenu.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Menus\MainMenu.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Menus\MenuAttributes.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Menus\OptionsMenu.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Menus\UpgradeMenu.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Level\Level.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Level\LevelFile.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Level\Sector.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Level\Tiles.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Game\HUD.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Game\Rules.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Game\Sides.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Game\State.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Game\Stats.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Game\UnitMenu.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Game\VentGame.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Editor\LevelEditor.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Editor\LevelMenu.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Editor\MiscMenu.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Editor\NodeMenu.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Editor\ShortcutMenu.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Editor\SupplyMenu.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Editor\TileMenu.h">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Buildings\BuildingBar.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Buildings\Buildings.h">
+      <Filter>Header Files\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai.h">
+      <Filter>Header Files\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai_Building.h">
+      <Filter>Header Files\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai_Side.h">
+      <Filter>Header Files\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai_State.h">
+      <Filter>Header Files\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Ai\Ai_Steering.h">
+      <Filter>Header Files\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Ai\AiScan.h">
+      <Filter>Header Files\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Ai\Units\Ai_UnitAttack.h">
+      <Filter>Header Files\Ai\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Ai\Units\Ai_UnitFunction.h">
+      <Filter>Header Files\Ai\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ventifactSource\Ai\Units\Ai_UnitMove.h">
+      <Filter>Header Files\Ai\Units</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

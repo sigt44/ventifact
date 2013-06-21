@@ -1,0 +1,614 @@
+#include <stdarg.h>
+#include "Sprite.h"
+
+#include "Animation.h"
+#include "Surface.h"
+#include "SurfaceManager.h"
+#include "SpriteEffects.h"
+#include "Effects/FadeIn.h"
+#include "../Kernel/Kernel.h"
+#include "../Kernel/Kernel_State.h"
+#include "../File.h"
+#include "../Memory.h"
+
+void sprite_ActivateFrame(Sprite *sprite)
+{
+    /*Set the current frame pointer*/
+    sprite->frameCurrent = sprite->frameListCurrent->data;
+
+    /*Setup the frame timer*/
+    sprite->frameTime = timer_Setup(sprite->frameTime.srcTime, 0, sprite->frameCurrent->deltaTime, 1);
+
+    /*Set the correct alpha*/
+    //sprite_SetAlpha(sprite, sprite->alpha);
+
+    return;
+}
+
+void sprite_Next_Frame(Sprite *sprite)
+{
+    //sprite_SetAlpha(sprite, sprite->alphaOriginal);
+
+    frame_Next(&sprite->frameListCurrent, sprite->frameList);
+
+    sprite_ActivateFrame(sprite);
+
+    return;
+}
+
+void sprite_SetFrame(Sprite *sprite, int index)
+{
+    int x = 0;
+
+    sprite->frameListCurrent = sprite->frameList;
+
+    for(x = 0; x < index; x++)
+    {
+        frame_Next(&sprite->frameListCurrent, sprite->frameList);
+    }
+
+    //sprite_SetAlpha(sprite, sprite->alphaOriginal);
+
+    sprite_ActivateFrame(sprite);
+
+    return;
+}
+
+void sprite_ForceFrame(Sprite *sprite, int index, int updateCount)
+{
+    sprite_SetFrame(sprite, index);
+
+    sprite->frameCurrent->updateCount = updateCount;
+
+    return;
+}
+
+void sprite_Previous_Frame(Sprite *sprite)
+{
+    //sprite_SetAlpha(sprite, sprite->alphaOriginal);
+
+    frame_Previous(&sprite->frameListCurrent, sprite->frameList);
+
+    sprite_ActivateFrame(sprite);
+
+    return;
+}
+
+int sprite_Get_Frame(Sprite *sprite)
+{
+    Frame *currentFrame = sprite->frameCurrent;
+
+    if(currentFrame->updateCount > 0)
+    {
+        currentFrame->updateCount --;
+
+        if(currentFrame->updateCount == 0)
+            return 1;
+    }
+
+    /*Frame change does not rely on time*/
+    if(currentFrame->deltaTime == 0)
+    {
+        return 0;
+    }
+
+    timer_Calc(&sprite->frameTime);
+
+    if(timer_Get_Remain(&sprite->frameTime) < 1)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+SDL_Surface *sprite_CurrentSurface(Sprite *sprite)
+{
+    return sprite->frameCurrent->graphic;
+}
+
+void sprite_DrawAtPos(int x, int y, Sprite *sprite, SDL_Surface *destination)
+{
+    int oldX = sprite->x;
+    int oldY = sprite->y;
+
+    sprite->x = x;
+    sprite->y = y;
+
+    sprite_Draw(sprite, destination);
+
+    sprite->x = oldX;
+    sprite->y = oldY;
+
+    return;
+}
+
+void sprite_DrawAtPosClip(int x, int y, SDL_Rect *clip, Sprite *sprite, SDL_Surface *destination)
+{
+    int oldX = sprite->x;
+    int oldY = sprite->y;
+    SDL_Rect oldClip = sprite->clip;
+
+    sprite->x = x;
+    sprite->y = y;
+
+    sprite->clip = *clip;
+
+    sprite_Draw(sprite, destination);
+
+    sprite->x = oldX;
+    sprite->y = oldY;
+
+    sprite->clip = oldClip;
+
+    return;
+}
+
+void sprite_Draw(Sprite *sprite, SDL_Surface *destination)
+{
+    struct list *iterate = NULL;
+    struct list *frames = sprite->frameList;
+    Frame *frame = NULL;
+    int drawFrame = 0;
+    int currentFrame = 0;
+    SDL_Rect clip;
+    int clipOffsetX = 0;
+    int clipOffsetY = 0;
+
+    while(frames != NULL)
+    {
+        frame = frames->data;
+
+        /*If the frame is a global one*/
+        if(frame->deltaTime < 0)
+        {
+            if(frame == sprite->frameCurrent)
+            {
+                sprite_Next_Frame(sprite);
+            }
+
+            drawFrame = 1;
+        }
+        else if(frame == sprite->frameCurrent)
+        {
+            /*Update all the effects on the sprite*/
+            if(frame == sprite->frameCurrent)
+            {
+                iterate = sprite->effectList;
+                while(iterate != NULL)
+                {
+                    sprite->currentEffect = iterate->data;
+                    sprite->currentEffect->update(sprite);
+                    iterate = iterate->next;
+                }
+            }
+
+            drawFrame = 1;
+        }
+
+        if(drawFrame == 1 && destination != NULL && frame->enabled == 1)
+        {
+            clip.x = frame->clip.x + sprite->clip.x;
+            clip.y = frame->clip.y + sprite->clip.y;
+            clip.w = sprite->clip.w;
+            clip.h = sprite->clip.h;
+
+            if(frame->offsetX >= sprite->clip.w)
+                drawFrame = 0;
+            else
+                clip.w = sprite->clip.w - frame->offsetX;
+
+            if(frame->offsetY >= sprite->clip.h)
+                drawFrame = 0;
+            else
+                clip.h = sprite->clip.h - frame->offsetY;
+
+            if(clip.w > frame->clip.w)
+                clip.w = frame->clip.w;
+            if(clip.h > frame->clip.h)
+                clip.h = frame->clip.h;
+
+            if(frame->offsetX != 0)
+            {
+                if(sprite->clip.x > frame->offsetX)
+                {
+                    clip.x = (sprite->clip.x - frame->offsetX) + frame->clip.x;
+                    clipOffsetX = sprite->clip.x;
+                }
+                else
+                {
+                    clip.x = frame->clip.x;
+                    clipOffsetX = frame->offsetX;
+                }
+            }
+            else
+            {
+                clipOffsetX = sprite->clip.x;
+            }
+
+            if(frame->offsetY != 0)
+            {
+                if(sprite->clip.y > frame->offsetY)
+                {
+                    clip.y = (sprite->clip.y - frame->offsetY) + frame->clip.y;
+                    clipOffsetY = sprite->clip.y;
+                }
+                else
+                {
+                    clip.y = frame->clip.y;
+                    clipOffsetY = frame->offsetY;
+                }
+            }
+            else
+            {
+                clipOffsetY = sprite->clip.y;
+            }
+
+            if(clip.x > 0 && frame->offsetX != 0)
+            {
+
+                printf("[%d] Sprite clip (%d %d %d %d)\n", currentFrame, sprite->clip.x, sprite->clip.y, sprite->clip.w, sprite->clip.h);
+                printf("[%d] Frame clip (%d %d %d %d)\n", currentFrame, frame->clip.x, frame->clip.y, frame->clip.w, frame->clip.h);
+                printf("[%d] Actual clip (%d %d %d %d)\n", currentFrame, clip.x, clip.y, clip.w, clip.h);
+                printf("[%d] Draw at (%d %d) --> (%d %d) (%d %d)\n", currentFrame, sprite->x, sprite->y, sprite->x + clipOffsetX, sprite->y + clipOffsetY, frame->offsetX, frame->offsetY);
+               // printf("[%d] Drawing (%d %d)Offset(%d %d)(%d %d) with clip (%d %d %d %d) vs (%d %d %d %d)\n", currentFrame, sprite->x, sprite->y, frame->offsetX, frame->offsetY, clipOffsetX, clipOffsetY, clip.x, clip.y, clip.w, clip.h, frame->clip.x, frame->clip.y, frame->clip.w, frame->clip.h);
+            }
+
+            if(drawFrame == 1)
+            {
+                #ifndef SURFACEMAN_OFF
+                surfaceMan_Push(gKer_SurfaceManager(), 0, sprite->layer, 0, sprite->x + clipOffsetX, sprite->y + clipOffsetY, frame->graphic, destination, &clip);
+                #else
+                surf_Blit(sprite->x + clipOffsetX, sprite->y + clipOffsetY, frame->graphic, destination, &clip);
+                #endif
+            }
+        }
+
+        drawFrame = 0;
+
+        currentFrame ++;
+
+        frames = frames->next;
+    }
+
+    /*Check if current frames time is up*/
+    if(sprite->frameCurrent != NULL)
+    {
+        if(sprite_Get_Frame(sprite) == 1)
+        {
+            sprite_Next_Frame(sprite);
+        }
+    }
+
+    return;
+}
+
+void sprite_AddFrame(Sprite *sprite, Frame *frame)
+{
+    list_Stack(&sprite->frameList, frame, 0);
+
+    if(sprite->frameListCurrent == NULL)
+    {
+        sprite->frameListCurrent = sprite->frameList;
+        sprite->frameCurrent = frame;
+
+        sprite->frameTime = timer_Setup(sprite->frameTime.srcTime, 0, sprite->frameCurrent->deltaTime,1);
+    }
+
+    sprite->totalFrames ++;
+
+    return;
+}
+
+/*
+    Function: sprite_ReplaceFrame
+
+    Description -
+    Replaces a frame in a sprite at given index.
+
+    3 aguments:
+    Sprite *sprite - the sprite to have its frame replaced.
+    Frame *frame - The new frame to replace the old one.
+    int frameIndex - The current position of the old frame in the sprite.
+*/
+void sprite_ReplaceFrame(Sprite *sprite, Frame *frame, int frameIndex)
+{
+    int x = 0;
+    struct list *frameList = sprite->frameList;
+
+    /*Find the frame to replace*/
+    for(x = 0; x < frameIndex; x++)
+    {
+        frameList = frameList->next;
+    }
+
+    /*Replace the frame*/
+    if(sprite->frameCurrent == frameList->data)
+        sprite->frameCurrent = frame;
+
+    frame_Clean(frameList->data);
+    mem_Free(frameList->data);
+
+    frameList->data = frame;
+
+    return;
+}
+
+/*
+    Function: sprite_RetrieveFrame
+
+    Description -
+    Returns the frame in a sprite at given index.
+
+    2 aguments:
+    Sprite *sprite - the sprite that contains the frame.
+    int frameIndex - The position of the frame to return.
+*/
+Frame *sprite_RetrieveFrame(Sprite *sprite, int frameIndex)
+{
+    int x = 0;
+    struct list *frameList = sprite->frameList;
+
+    for(x = 0; x < frameIndex; x++)
+    {
+        frameList = frameList->next;
+    }
+
+    return frameList->data;
+}
+
+/*
+    Function: sprite_RemoveFrame
+
+    Description -
+    Remove a frame in a sprite at given index.
+
+    3 aguments:
+    Sprite *sprite - the sprite to have its frame removed.
+    int frameIndex - The current position of the frame to remove in the sprite.
+*/
+void sprite_RemoveFrame(Sprite *sprite, int frameIndex)
+{
+    int x = 0;
+    Frame *removedFrame = NULL;
+    struct list *frameList = sprite->frameList;
+
+    /*Find the frame to remove*/
+    for(x = 0; x < frameIndex; x++)
+    {
+        frameList = frameList->next;
+    }
+
+    /*Replace the frame*/
+    if(sprite->frameCurrent == frameList->data)
+    {
+        if(frameList->previous != NULL)
+        {
+            sprite->frameListCurrent = frameList->previous;
+            sprite->frameCurrent = frameList->previous->data;
+        }
+        else
+        {
+            sprite->frameCurrent = NULL;
+            sprite->frameListCurrent = NULL;
+        }
+    }
+
+    frame_Clean(frameList->data);
+    mem_Free(frameList->data);
+
+    list_Delete_Node(&sprite->frameList, frameList);
+
+    sprite->totalFrames --;
+
+    return;
+}
+
+void sprite_EnableFrame(Sprite *sprite, int enable)
+{
+    if(sprite->frameCurrent != NULL)
+    {
+        sprite->frameCurrent->enabled = enable;
+    }
+
+    return;
+}
+
+Sprite *sprite_Create(void)
+{
+    Sprite *returnSprite = (Sprite *)mem_Malloc(sizeof(Sprite), __LINE__, __FILE__);
+
+    return returnSprite;
+}
+
+Sprite *sprite_Copy(Sprite *sprite, unsigned int local)
+{
+	struct list *iterate = NULL;
+	Frame *frame = NULL;
+	Frame *cFrame = NULL;
+    Sprite *returnSprite = (Sprite *)mem_Malloc(sizeof(Sprite), __LINE__, __FILE__);
+
+	*returnSprite = *sprite;
+
+	iterate = sprite->frameListCurrent;
+
+    returnSprite->frameList = NULL;
+
+	while(iterate != NULL)
+	{
+		frame = iterate->data;
+        cFrame = frame_Create(frame->deltaTime, frame->graphic, frame->offsetX, frame->offsetY, frame->clip.x, frame->clip.y, frame->clip.w, frame->clip.h, frame->freeSurface);
+
+		if(frame->freeSurface == A_FREE)
+		{
+			//printf("Warning: Copying a sprite with surfaces that are local to the source sprite\n");
+			cFrame->graphic = surf_Copy(frame->graphic);
+		}
+
+		list_Stack(&returnSprite->frameList, cFrame, 0);
+
+		iterate = iterate->next;
+	}
+
+	sprite_Frame_Setup(returnSprite, returnSprite->frameTime.srcTime, returnSprite->layer);
+
+    returnSprite->effectList = NULL;
+    returnSprite->currentEffect = NULL;
+
+	if(local)
+        returnSprite->local = 1;
+    else
+        returnSprite->local = 0;
+
+    return returnSprite;
+}
+
+Sprite *sprite_Setup(Sprite *sprite, int local, unsigned int layer, Timer *srcTimer, int numberOfFrames, ...)
+{
+    int x;
+    va_list args;
+    Frame *frameCurrent = NULL;
+
+    va_start(args, numberOfFrames); /* Get the number of arguments needed from reading numberOfFrames. ?*/
+
+    sprite->frameList = sprite->frameListCurrent =  NULL;
+    sprite->x = 0;
+    sprite->y = 0;
+
+    sprite->local = local;
+
+    sprite->totalFrames = numberOfFrames;
+
+    sprite->effectList = NULL;
+    sprite->currentEffect = NULL;
+    sprite->alphaOriginal = sprite->alpha = SDL_ALPHA_OPAQUE;
+
+    for(x = 0; x < numberOfFrames; x++)
+    {
+        frameCurrent = va_arg( args, Frame *);
+        list_Stack(&sprite->frameList, frameCurrent, 0);
+    }
+
+    va_end(args); /*Always call this in the same function as va_start.*/
+
+    sprite_Frame_Setup(sprite, srcTimer, layer);
+    sprite_SetClip(sprite, 0, 0, -1, -1);
+
+    return sprite;
+}
+
+void sprite_Frame_Setup(Sprite *sprite, Timer *srcTimer, unsigned int layer)
+{
+    sprite->frameListCurrent = sprite->frameList;
+    sprite->layer = layer;
+
+    if(sprite->frameList == NULL)
+    {
+        sprite->frameCurrent = NULL;
+        sprite->frameTime = timer_Setup(srcTimer, 0, 0, 1);
+    }
+    else
+    {
+        sprite->frameCurrent = sprite->frameList->data;
+        sprite->frameTime = timer_Setup(srcTimer, 0, sprite->frameCurrent->deltaTime, 1);
+    }
+
+    return;
+}
+
+Sprite *sprite_SetPos(Sprite *sprite, int x, int y)
+{
+    sprite->x = x;
+    sprite->y = y;
+
+    return sprite;
+}
+
+void sprite_SetClip(Sprite *sprite, int x, int y, int w, int h)
+{
+    sprite->clip.x = x;
+    sprite->clip.y = y;
+    sprite->clip.w = w;
+    sprite->clip.h = h;
+
+    return;
+}
+
+void sprite_SetAlphaAll(Sprite *sprite, unsigned int alpha)
+{
+    struct list *frameList = sprite->frameList;
+    Frame *frame = NULL;
+
+    sprite->alpha = alpha;
+
+    while(frameList != NULL)
+    {
+        frame = frameList->data;
+
+        if(frame->graphic != NULL)
+        {
+            if(alpha == SDL_ALPHA_OPAQUE)
+                SDL_SetAlpha(frame->graphic, 0, alpha);
+            else
+                SDL_SetAlpha(frame->graphic, SDL_SRCALPHA | SDL_RLEACCEL, alpha);
+        }
+
+        frameList = frameList->next;
+    }
+
+    return;
+}
+
+void sprite_SetAlpha(Sprite *sprite, unsigned int alpha)
+{
+    //sprite->alpha = alpha;
+
+    if(sprite_CurrentSurface(sprite) != NULL)
+    {
+        if(alpha == SDL_ALPHA_OPAQUE)
+            SDL_SetAlpha(sprite_CurrentSurface(sprite), 0, alpha);
+        else
+            SDL_SetAlpha(sprite_CurrentSurface(sprite), SDL_SRCALPHA | SDL_RLEACCEL, alpha);
+    }
+
+    return;
+}
+
+void sprite_Clean(Sprite *sprite)
+{
+    frame_CleanList(&sprite->frameList);
+
+    sprite->frameList = sprite->frameListCurrent = NULL;
+    sprite->frameCurrent = NULL;
+    sprite->frameTime = timer_Setup(sprite->frameTime.srcTime,0,0,1);
+
+    sprite_ClearEffects(sprite);
+
+    return;
+}
+
+void sprite_ClearEffects(Sprite *sprite)
+{
+    while(sprite->effectList != NULL)
+    {
+        spriteEffect_Delete(sprite->effectList->data);
+        list_Pop(&sprite->effectList);
+    }
+    return;
+}
+
+unsigned int sprite_Width(Sprite *sprite)
+{
+    return frame_Width(sprite->frameCurrent);
+}
+
+unsigned int sprite_Height(Sprite *sprite)
+{
+    return frame_Height(sprite->frameCurrent);
+}
+
+void sprite_SetLayer(Sprite *sprite, unsigned int layer)
+{
+    sprite->layer = layer;
+    return;
+}
