@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="WIN32">
-				<Option output="bin/WIN32/Ventifact" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/ventifact" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="bin" />
-				<Option object_output="./obj/WIN32/" />
+				<Option object_output="./obj/ventifact-WIN32/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -25,8 +25,9 @@
 				</Linker>
 			</Target>
 			<Target title="GP2X">
-				<Option output="bin/VentifactGP2X.gpe" prefix_auto="0" extension_auto="0" />
-				<Option object_output="./objs/GP2X" />
+				<Option output="bin/ventifact-GP2X.gpe" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="./bin" />
+				<Option object_output="./obj/ventifact-GP2X" />
 				<Option type="0" />
 				<Option compiler="gp2xarmlinux" />
 				<Option projectCompilerOptionsRelation="1" />
@@ -42,7 +43,7 @@
 			<Target title="LINUX">
 				<Option output="bin/ventifact-linux" prefix_auto="0" extension_auto="0" />
 				<Option working_dir="./bin" />
-				<Option object_output="./objs" />
+				<Option object_output="./obj/ventifact-linux" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -63,25 +64,10 @@
 					<Add library="SDL_mixer" />
 				</Linker>
 			</Target>
-			<Target title="DINGOO">
-				<Option output="bin/VentifactDingoo" prefix_auto="0" extension_auto="0" />
-				<Option working_dir="./bin" />
-				<Option object_output="./objs/Dingoo" />
-				<Option type="0" />
-				<Option compiler="mipsdingoo" />
-				<Option projectCompilerOptionsRelation="1" />
-				<Compiler>
-					<Add option="-DDINGOO" />
-					<Add option="-DSOUNDS" />
-				</Compiler>
-				<Linker>
-					<Add option="-lSDL_mixer -lEngineDingoo" />
-				</Linker>
-			</Target>
 			<Target title="DINGOOSTATIC">
-				<Option output="bin/VentifactDingooStatic" prefix_auto="0" extension_auto="0" />
+				<Option output="bin/ventifact-dingoo" prefix_auto="0" extension_auto="0" />
 				<Option working_dir="./bin" />
-				<Option object_output="./objs/Dingoo" />
+				<Option object_output="./obj/ventifact-dingoo" />
 				<Option type="0" />
 				<Option compiler="mipsdingoo" />
 				<Option projectCompilerOptionsRelation="1" />
@@ -92,13 +78,13 @@
 				</Compiler>
 				<Linker>
 					<Add option="-lSDL_mixer -lSDL_ttf -lSDL_image -lSDL -lm -msoft-float" />
-					<Add library="/home/l449/Programming/Engine/bin/libEngineDingoo.a" />
+					<Add library="./bin/libEngineDingoo.a" />
 				</Linker>
 			</Target>
 			<Target title="PANDORASTATIC">
 				<Option output="bin/ventifact-pandora" prefix_auto="0" extension_auto="0" />
 				<Option working_dir="./bin" />
-				<Option object_output="./obj/Pandora" />
+				<Option object_output="./obj/ventifact-pandora" />
 				<Option type="0" />
 				<Option compiler="pandora" />
 				<Compiler>
@@ -111,7 +97,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-lSDL -lSDL_mixer -lSDL_ttf -lSDL_image  -lm -msoft-float" />
-					<Add library="/home/l449/Programming/Engine/bin/libVentEngine-Pandora.a" />
+					<Add library="./bin/libVentEngine-Pandora.a" />
 				</Linker>
 			</Target>
 		</Build>
