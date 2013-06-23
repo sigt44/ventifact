@@ -201,7 +201,7 @@ static Ui_ButtonScroll *MM_CreateSaveScroll(Base_State *gState)
     int x = 0;
 
 	list_ClearAll(&menu->saveList);
-    scroll = veMenu_ScrollFile("../Saves", ".save", &menu->saveList, 40, 40, VL_HUD + 2, &menu->timer);
+    scroll = veMenu_ScrollFile(kernel_GetPath("PTH_VentSaves"), ".save", &menu->saveList, 40, 40, VL_HUD + 2, &menu->timer);
 
     scroll->rotate = 0;
     scroll->maxShowButtons = 4;
@@ -235,7 +235,7 @@ static void MM_StartLoad(Ui_Button *button)
 	uiSpine_DeleteEntity(spineLoad, uiSpine_GetEntityBase(spineLoad, "Scroll:Saves"));
 	uiSpine_AddScroll(spineLoad, MM_CreateSaveScroll(gState), "Scroll:Saves");
 	uiSpine_MapEntity(spineLoad);
-	
+
     uiSpine_Open(spineLoad, &menu->spine);
 
 
@@ -552,11 +552,11 @@ static void MM_SetupNewMenu(Base_State *gState)
     letterScroll[0] = MM_CreateLetterScroll(menu, 40, 60, VL_HUD + 2, 0);
     letterScroll[1] = MM_CreateLetterScroll(menu, 75, 60, VL_HUD + 2, 1);
     letterScroll[2] = MM_CreateLetterScroll(menu, 110, 60, VL_HUD + 2, 2);
-	
+
     uiSpine_AddScroll(spineNew, letterScroll[0], "Scroll:Letter1");
     uiSpine_AddScroll(spineNew, letterScroll[1], "Scroll:Letter2");
     uiSpine_AddScroll(spineNew, letterScroll[2], "Scroll:Letter3");
-				
+
     /*Setup the button chooser */
     veMenu_SetSpineControl(spineNew);
     uiSpine_MapEntity(spineNew);
@@ -624,10 +624,10 @@ void Menu_Main_Init(void *info)
                           "Button:Options",
                           "Button:Editor",
                           "Button:Exit");
-		
+
     MM_SetupNewMenu(gState);
     MM_SetupLoadMenu(gState);
-	
+
     veMenu_SetSpineControl(&menu->spine);
     uiSpine_MapEntity(&menu->spine);
 

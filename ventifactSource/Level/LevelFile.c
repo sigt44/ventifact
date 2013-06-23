@@ -326,7 +326,7 @@ static void vLevel_SaveEdge(Vent_Level *l, FILE *save)
 */
 void vLevel_Save(Vent_Level *l, char *name)
 {
-    char *saveFolder = "../Levels/";
+    char *saveFolder = kernel_GetPath("PTH_VentLevels");
     char *saveName = (char *)mem_Malloc(strlen(saveFolder) + strlen(name) + strlen(".map") + 1, __LINE__, __FILE__);
 
     int x = 0;
@@ -611,7 +611,7 @@ void vLevel_LoadEdge_0(Vent_Level *l, Level_Tag *tag, FILE *levelFile)
 */
 void vLevel_Load(Vent_Level *l, void *game, Timer *srcTime, char *name)
 {
-    char *loadFolder = "../Levels/";
+    char *loadFolder = kernel_GetPath("PTH_VentLevels");
     char *loadName = (char *)mem_Malloc(strlen(loadFolder) + strlen(name) + 1, __LINE__, __FILE__);
 
     FILE *load = NULL;

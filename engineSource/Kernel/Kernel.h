@@ -19,11 +19,11 @@ enum M_FREE
     A_FREE = 1 /*Object manager should remove the structure on cleanup*/
 };
 
-struct pe_Path
+typedef struct pe_Path
 {
 	char pathName[127];
 	char pathAddress[127];
-} typedef PE_Path;
+} PE_Path;
 
 struct pe_Kernel
 {
@@ -50,7 +50,7 @@ struct pe_Kernel
 
     FILE *log;
 
-    PE_Path **paths;
+    PE_Path *paths;
 	unsigned int totalPaths;
 
     SDL_Surface *screen;
@@ -70,8 +70,7 @@ int kernel_Quit(void);
 void kernel_Set_Defaults(void);
 
 void kernel_AddPath(char *pathName, char *pathAddress);
-int kernel_GetPath(char *pathName, char **pathAddress);
-
+char *kernel_GetPath(char *pathName);
 
 void kernel_SetPaths(void);
 

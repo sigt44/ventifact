@@ -836,7 +836,9 @@ Ui_ButtonScroll *veMenu_ScrollFile(char *DIRName, char *extension, struct list *
         fileDesc = (struct dirent *)currentList->data;
 
         fileName = (char *)mem_Malloc(strlen(fileDesc->d_name) + 1, __LINE__, __FILE__);
+
         strncpy(fileName, fileDesc->d_name, strlen(fileDesc->d_name));
+        fileName[strlen(fileDesc->d_name)] = '\0';
 
         list_Stack(nameList, fileName, totalFiles);
 

@@ -93,7 +93,7 @@
 					<Add option="-DPANDORA" />
 					<Add option="-DSOUNDS" />
 					<Add option="-DSCREEN_BIT_16" />
-					<Add directory="/home/l449/Programming/Engine/engineSource" />
+					<Add directory="./engineSource" />
 				</Compiler>
 				<Linker>
 					<Add option="-lSDL -lSDL_mixer -lSDL_ttf -lSDL_image  -lm -msoft-float" />

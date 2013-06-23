@@ -7,7 +7,7 @@ void vConfig_Save(void)
 {
     struct list *controlList = ve_Controls.controlList;
 
-    FILE *save = fopen("../Config.cfg", "w");
+    FILE *save = fopen(kernel_GetPath("PTH_VentConfig"), "w");
 
     if(save == NULL)
     {
@@ -43,7 +43,7 @@ int vConfig_Load(void)
     int numLoad = 0;
     char controlName[255];
     Control_Event *controlFind = NULL;
-    FILE *load = fopen("../Config.cfg", "r");
+    FILE *load = fopen(kernel_GetPath("PTH_VentConfig"), "r");
 
     if(load == NULL)
     {

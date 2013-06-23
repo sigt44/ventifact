@@ -196,12 +196,12 @@ void vPlayer_Save(Vent_Player *p)
 {
     const int saveID = 2;
     FILE *save = NULL;
-    char saveDIR[18] = {"../Saves/"};
+    char saveDIR[136];
     char saveEXT[6] = {".save"};
 
     int x = 0;
     struct list *campaignList = p->campaignList;
-
+    strncpy(saveDIR, kernel_GetPath("PTH_VentSaves"), 127);
     strcat(saveDIR, p->pName);
     strcat(saveDIR, saveEXT);
 
@@ -243,9 +243,10 @@ void vPlayer_Save(Vent_Player *p)
 int vPlayer_CheckSaved(char *name3Char)
 {
     FILE *load = NULL;
-    char saveDIR[18] = "../Saves/";
+    char saveDIR[136];
     char saveEXT[6] = ".save";
 
+    strncpy(saveDIR, kernel_GetPath("PTH_VentSaves"), 127);
     strcat(saveDIR, name3Char);
     strcat(saveDIR, saveEXT);
 
@@ -266,7 +267,7 @@ int vPlayer_Load(Vent_Player *p, char *name3Char)
     const int loadID = 2;
     int saveID = 0;
     FILE *load = NULL;
-    char saveDIR[18] = {"../Saves/"};
+    char saveDIR[136];
     char saveEXT[6] = {".save"};
     int timePassed = 0;
 
@@ -274,6 +275,7 @@ int vPlayer_Load(Vent_Player *p, char *name3Char)
 
     Vent_Campaign *campaign = NULL;
 
+    strncpy(saveDIR, kernel_GetPath("PTH_VentSaves"), 127);
     strcat(saveDIR, name3Char);
     strcat(saveDIR, saveEXT);
 

@@ -81,46 +81,56 @@ void kernel_Set_Defaults(void)
     return;
 }
 
-int kernel_GetPath(char *pathName, char **pathAddress)
+char *kernel_GetPath(char *pathName)
 {
 	unsigned int x = 0;
+	PE_Path *path = NULL;
 
 	for(; x < kernel_Main.totalPaths; x++)
 	{
-		if(strcmp(kernel_Main.paths[x]->pathName, pathName) == 0)
-		{
-			if(pathAddress != NULL)
-				*pathAddress = kernel_Main.paths[x]->pathAddress;
+	    path = (PE_Path *)(kernel_Main.paths + x);
 
-			return 1;
+		if(strcmp(path->pathName, pathName) == 0)
+		{
+            return path->pathAddress;
 		}
 	}
-	
-	printf("Error could not find path %s\n", pathName);
 
-	return 0;
+	/*printf("Error could not find path %s\n", pathName);*/
+
+	return "NULL";
 }
 
 void kernel_AddPath(char *pathName, char *pathAddress)
 {
 	int index = kernel_Main.totalPaths;
 	char realPathName[127] = "PTH_";
+	PE_Path *paths = NULL;
+	PE_Path *path = NULL;
 	strncat(realPathName, pathName, 123);
 
-	if(kernel_GetPath(realPathName, NULL) != 0)
+	if(strcmp(pathName, kernel_GetPath(realPathName)) == 0)
 	{
-		printf("Error already a path with name %s\n", realPathName);
+		/*printf("Error already a path with name %s\n", realPathName);*/
 		return;
 	}
 
 	kernel_Main.totalPaths ++;
 
-	realloc (kernel_Main.paths, sizeof(PE_Path) * kernel_Main.totalPaths);
+	paths = (PE_Path *)realloc(kernel_Main.paths, sizeof(PE_Path) * kernel_Main.totalPaths);
 
-	strncpy(kernel_Main.paths[index]->pathName, realPathName, 127);
-	strncpy(kernel_Main.paths[index]->pathAddress, pathAddress, 127);
+	if(paths == NULL)
+    {
+        printf("Error could not allocated more memory for paths\n");
+        return;
+    }
 
-	printf("Added path [%s][%s]\n", kernel_Main.paths[index]->pathName, kernel_Main.paths[index]->pathAddress);
+    kernel_Main.paths = paths;
+    path = (PE_Path *)(kernel_Main.paths + index);
+
+	strncpy(path->pathName, realPathName, 127);
+	strncpy(path->pathAddress, pathAddress, 127);
+
 	return;
 }
 
@@ -160,7 +170,6 @@ void kernel_SetPaths(void)
 
 int kernel_Init(const char *name)
 {
-	char *path = NULL;
     printf("Engine Initializing V %d.%d.%d\n", K_VERS_1, K_VERS_2, K_VERS_3);
 
     if(mem_Init())
@@ -172,16 +181,14 @@ int kernel_Init(const char *name)
     kernel_Set_Defaults();
     kernel_SetPaths();
 
-	kernel_GetPath("PTH_FileLog", &path);
-    if(file_Init(path))
+    if(file_Init(kernel_GetPath("PTH_FileLog")))
 	{
 		printf("\tFailed to load file manager\n");
 		return 1;
 	}
 
     #ifndef NO_LOG
-	kernel_GetPath("PTH_Log", &path);
-    kernel_Main.log = file_Open(path, "w");
+    kernel_Main.log = file_Open(kernel_GetPath("PTH_Log"), "w");
 
     if(kernel_Main.log == NULL)
     {
@@ -207,8 +214,7 @@ int kernel_Init(const char *name)
 
 	ker_Report_Video();
 
-	kernel_GetPath("PTH_Textures", &path);
-	surf_Init(path);
+	surf_Init(kernel_GetPath("PTH_Textures"));
 
 	if(control_Init(kernel_Main.control_Flags))
 	{
@@ -216,8 +222,7 @@ int kernel_Init(const char *name)
 		return 1;
 	}
 
-	kernel_GetPath("PTH_Fonts", &path);
-	if(font_Init(path))
+	if(font_Init(kernel_GetPath("PTH_Fonts")))
 	{
 		return 1;
 	}
@@ -415,7 +420,7 @@ int kernel_Quit(void)
 
 	puts("Paths");
 	if(kernel_Main.paths != NULL)
-		mem_Free(kernel_Main.paths);
+		free(kernel_Main.paths);
 
     puts("Memory");
     mem_Quit(); /* Keep this last*/

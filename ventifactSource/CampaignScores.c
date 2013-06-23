@@ -173,7 +173,7 @@ void vCaScores_Setup(Vent_CaScores *scores, void *vCampaign)
 void vCaScores_Save(Vent_CaScores *scores)
 {
     int x = 0;
-    char *saveDIR = "../Campaigns/";
+    char *saveDIR = kernel_GetPath("PTH_VentScores");
 
     char *scoreSave = (char *)mem_Malloc(strlen(saveDIR) + strlen(scores->campaignRecord.name) + strlen(".scr") + 1, __LINE__, __FILE__);
 
@@ -224,7 +224,7 @@ void vCaScores_Save(Vent_CaScores *scores)
 int vCaScores_Load(Vent_CaScores *scores)
 {
     int x = 0;
-    char *saveDIR = "../Campaigns/";
+    char *saveDIR = kernel_GetPath("PTH_VentScores");
 
     char *scoreSave = (char *)mem_Malloc(strlen(saveDIR) + strlen(scores->campaignRecord.name) + strlen(".scr") + 1, __LINE__, __FILE__);
 
