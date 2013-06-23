@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7E77D7DC-7869-45D6-A044-62F36477C9BB}</ProjectGuid>
+    <RootNamespace>EngineDLL</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>EngineDLL-Win32</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>EngineDLL-Win32</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Programming\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WINDOWS;SOUNDS;SCREEN_BIT_32;MEM_TRACK;MEM_FILE;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Programming\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WINDOWS;SOUNDS;SCREEN_BIT_32;MEM_TRACK;MEM_FILE;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\engineSource\BaseState.c" />
+    <ClCompile Include="..\..\..\engineSource\Camera.c" />
+    <ClCompile Include="..\..\..\engineSource\Collision.c" />
+    <ClCompile Include="..\..\..\engineSource\Common\Fuzzy\FuzzyLV.c" />
+    <ClCompile Include="..\..\..\engineSource\Common\Fuzzy\FuzzyManager.c" />
+    <ClCompile Include="..\..\..\engineSource\Common\Fuzzy\FuzzySet.c" />
+    <ClCompile Include="..\..\..\engineSource\Common\HashTable.c" />
+    <ClCompile Include="..\..\..\engineSource\Common\List.c" />
+    <ClCompile Include="..\..\..\engineSource\Common\ListWatcher.c" />
+    <ClCompile Include="..\..\..\engineSource\Controls.c" />
+    <ClCompile Include="..\..\..\engineSource\DataStruct.c" />
+    <ClCompile Include="..\..\..\engineSource\File.c" />
+    <ClCompile Include="..\..\..\engineSource\Flag.c" />
+    <ClCompile Include="..\..\..\engineSource\Font.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\Animation.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\DrawManager.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\Effects\Blink.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\Effects\FadeIn.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\Effects\FadeOut.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\Effects\Slide.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\Graphics.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\Pixel.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\PixelManager.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\Sprite.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\SpriteEffects.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\SpriteManager.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\Surface.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphics\SurfaceManager.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphs\Edge.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphs\Graph.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphs\Node.c" />
+    <ClCompile Include="..\..\..\engineSource\Graphs\Search\DijkstraSearch.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\Button.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\ButtonChain.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\ButtonChooser.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\ButtonFunc.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\ButtonPaths.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\ButtonScroll.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\Pointer.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\Spine.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\SpineEntity.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\TextBox.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\TextInput.c" />
+    <ClCompile Include="..\..\..\engineSource\GUI\UiShape.c" />
+    <ClCompile Include="..\..\..\engineSource\Kernel\Kernel.c" />
+    <ClCompile Include="..\..\..\engineSource\Kernel\Kernel_Init.c" />
+    <ClCompile Include="..\..\..\engineSource\Kernel\Kernel_State.c" />
+    <ClCompile Include="..\..\..\engineSource\Maths.c" />
+    <ClCompile Include="..\..\..\engineSource\Memory.c" />
+    <ClCompile Include="..\..\..\engineSource\RK4.c" />
+    <ClCompile Include="..\..\..\engineSource\Screenshot.c" />
+    <ClCompile Include="..\..\..\engineSource\Sound.c" />
+    <ClCompile Include="..\..\..\engineSource\Time\Fps.c" />
+    <ClCompile Include="..\..\..\engineSource\Time\Timer.c" />
+    <ClCompile Include="..\..\..\engineSource\Vector2D.c" />
+    <ClCompile Include="..\..\..\engineSource\Vector2DInt.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\engineSource\BaseState.h" />
+    <ClInclude Include="..\..\..\engineSource\Camera.h" />
+    <ClInclude Include="..\..\..\engineSource\Collision.h" />
+    <ClInclude Include="..\..\..\engineSource\Common\Fuzzy\FuzzyLV.h" />
+    <ClInclude Include="..\..\..\engineSource\Common\Fuzzy\FuzzyManager.h" />
+    <ClInclude Include="..\..\..\engineSource\Common\Fuzzy\FuzzySet.h" />
+    <ClInclude Include="..\..\..\engineSource\Common\HashTable.h" />
+    <ClInclude Include="..\..\..\engineSource\Common\List.h" />
+    <ClInclude Include="..\..\..\engineSource\Common\ListWatcher.h" />
+    <ClInclude Include="..\..\..\engineSource\Controls.h" />
+    <ClInclude Include="..\..\..\engineSource\DataStruct.h" />
+    <ClInclude Include="..\..\..\engineSource\File.h" />
+    <ClInclude Include="..\..\..\engineSource\Flag.h" />
+    <ClInclude Include="..\..\..\engineSource\Font.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\Animation.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\DrawManager.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\Effects\Blink.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\Effects\FadeIn.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\Effects\FadeOut.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\Effects\Slide.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\Graphics.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\Pixel.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\PixelManager.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\Sprite.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\SpriteEffects.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\SpriteManager.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\Surface.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphics\SurfaceManager.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphs\Edge.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphs\Graph.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphs\Node.h" />
+    <ClInclude Include="..\..\..\engineSource\Graphs\Search\DijkstraSearch.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\Button.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\ButtonChain.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\ButtonChooser.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\ButtonFunc.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\ButtonPaths.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\ButtonScroll.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\Pointer.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\Spine.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\SpineEntity.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\TextBox.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\TextInput.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\UiShape.h" />
+    <ClInclude Include="..\..\..\engineSource\GUI\UI_Defines.h" />
+    <ClInclude Include="..\..\..\engineSource\Kernel\Kernel.h" />
+    <ClInclude Include="..\..\..\engineSource\Kernel\Kernel_Init.h" />
+    <ClInclude Include="..\..\..\engineSource\Kernel\Kernel_State.h" />
+    <ClInclude Include="..\..\..\engineSource\Maths.h" />
+    <ClInclude Include="..\..\..\engineSource\Memory.h" />
+    <ClInclude Include="..\..\..\engineSource\RK4.h" />
+    <ClInclude Include="..\..\..\engineSource\Screenshot.h" />
+    <ClInclude Include="..\..\..\engineSource\Sound.h" />
+    <ClInclude Include="..\..\..\engineSource\Time\Fps.h" />
+    <ClInclude Include="..\..\..\engineSource\Time\Timer.h" />
+    <ClInclude Include="..\..\..\engineSource\Vector2D.h" />
+    <ClInclude Include="..\..\..\engineSource\Vector2DInt.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
