@@ -1206,7 +1206,7 @@ void uiSpine_SetPos(Ui_Spine *spine, int x, int y)
     if(spine->camera != NULL)
     {
         camera2D_SetConstraints(spine->camera, spine->camera->minX + xChange, spine->camera->minY + yChange, spine->camera->maxX + xChange, spine->camera->maxY + yChange);
-        camera2D_ChangePosition(spine->camera, xChange, yChange);
+        camera2D_ChangePosition(spine->camera, (float)xChange, (float)yChange);
         camera2D_SetOrigin(spine->camera, spine->camera->originRect.x + xChange, spine->camera->originRect.y + yChange);
     }
 
@@ -1237,7 +1237,7 @@ void uiSpine_ChangePos(Ui_Spine *spine, int xDis, int yDis)
     if(spine->camera != NULL)
     {
         camera2D_SetConstraints(spine->camera, spine->camera->minX + xDis, spine->camera->minY + yDis, spine->camera->maxX + xDis, spine->camera->maxY + yDis);
-        camera2D_ChangePosition(spine->camera, xDis, yDis);
+        camera2D_ChangePosition(spine->camera, (float)xDis, (float)yDis);
         camera2D_SetOrigin(spine->camera, spine->camera->originRect.x + xDis, spine->camera->originRect.y + yDis);
     }
 

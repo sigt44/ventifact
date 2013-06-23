@@ -548,9 +548,11 @@ static void BFA_AddRemoveImage(Ui_Button *button)
     int originalID = *graphicID;
 
     char fullPath[255];
+	char *path;
 
     /*Get the path to the image to load*/
-    strcpy(fullPath, kernel_GetPath(PTH_GRAPHIC));
+	kernel_GetPath("PTH_Textures", &path);
+    strcpy(fullPath, path);
     strcat(fullPath, "Level/Custom/");
     strcat(fullPath, editor->tileEdit.customGraphicName);
 
@@ -742,10 +744,12 @@ static Ui_ButtonScroll *vLE_SetupImageScroll(Vent_Level_Editor *editor, Ui_Spine
 
     int x = 0;
     struct list *graphicNames = NULL;
+	char *path;
 
     Vent_Level_TileEditor *tEditor = &editor->tileEdit;
-
-    strncpy(fileDIR, kernel_GetPath(PTH_GRAPHIC), 239);
+	
+	kernel_GetPath("PTH_Textures", &path);
+    strncpy(fileDIR, path, 239);
     strcat(fileDIR, "Level/Custom/");
 
     if(tEditor->graphicNames != NULL)

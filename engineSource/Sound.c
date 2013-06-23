@@ -549,12 +549,15 @@ void sound_Play(void)
 Mix_Chunk *sound_Load(const char *soundName, int autoFree)
 {
     Mix_Chunk *s_New = NULL;
-
+	char *path = "NULL";
+	int pathLength = 0;
+	char *fullPath = NULL;
     /*Setup the full path to the sound*/
-    int pathLength = strlen(soundName) + strlen(kernel_GetPath(PTH_SOUNDS)) + 1;
-    char *fullPath = (char *)mem_Alloc(pathLength * sizeof(char));
+	kernel_GetPath("PTH_Sounds", &path);
+    pathLength = strlen(soundName) + strlen(path) + 1;
+    fullPath = (char *)mem_Alloc(pathLength * sizeof(char));
 
-    strncpy(fullPath, kernel_GetPath(PTH_SOUNDS), pathLength - strlen(soundName));
+    strncpy(fullPath, path, pathLength - strlen(soundName));
     strcat(fullPath, soundName);
 
     s_New = Mix_LoadWAV(fullPath);

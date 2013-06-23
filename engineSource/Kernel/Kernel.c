@@ -81,64 +81,78 @@ void kernel_Set_Defaults(void)
     return;
 }
 
-void kernel_SetPath(FILE *fileAtLine, unsigned int index) /*Set the directory of a certain component*/
+int kernel_GetPath(char *pathName, char **pathAddress)
 {
-    char newPath[128];
+	unsigned int x = 0;
 
-    if(index > (PTH_ARRAYEND-1))
-    {
-        printf("Failed to add path using index %d\n",index);
-        return;
-    }
+	for(; x < kernel_Main.totalPaths; x++)
+	{
+		if(strcmp(kernel_Main.paths[x]->pathName, pathName) == 0)
+		{
+			if(pathAddress != NULL)
+				*pathAddress = kernel_Main.paths[x]->pathAddress;
 
-    fgets(newPath, 127, fileAtLine); /*Get the line that the FILE pointer is at*/
+			return 1;
+		}
+	}
+	
+	printf("Error could not find path %s\n", pathName);
 
-    if(strlen(newPath) >= 127)
-    {
-        printf("Warning path (%s) for index %d may be too large %d\n", newPath, index, strlen(newPath));
-    }
+	return 0;
+}
 
-    string_Line(newPath); /*Get rid of the enter symbol at the of the line to properly assign the path*/
-    strncpy(kernel_Main.paths[index], newPath, 127);
+void kernel_AddPath(char *pathName, char *pathAddress)
+{
+	int index = kernel_Main.totalPaths;
+	char realPathName[127] = "PTH_";
+	strncat(realPathName, pathName, 123);
 
-    return;
+	if(kernel_GetPath(realPathName, NULL) != 0)
+	{
+		printf("Error already a path with name %s\n", realPathName);
+		return;
+	}
+
+	kernel_Main.totalPaths ++;
+
+	realloc (kernel_Main.paths, sizeof(PE_Path) * kernel_Main.totalPaths);
+
+	strncpy(kernel_Main.paths[index]->pathName, realPathName, 127);
+	strncpy(kernel_Main.paths[index]->pathAddress, pathAddress, 127);
+
+	printf("Added path [%s][%s]\n", kernel_Main.paths[index]->pathName, kernel_Main.paths[index]->pathAddress);
+	return;
 }
 
 void kernel_SetPaths(void)
 {
     FILE *checkFile = NULL;
-
+	char pathName[123];
+	char pathAddress[127];
+	char **testchar[2][2];
     /*First setup defaults*/
-    strncpy(kernel_Main.paths[PTH_GRAPHIC], "../Textures/", 127);
-    strncpy(kernel_Main.paths[PTH_FONT], "../Fonts/", 127);
-    strncpy(kernel_Main.paths[PTH_LOG], "../Log/log.txt", 127);
-    strncpy(kernel_Main.paths[PTH_FILELOG], "../Log/file.txt", 127);
-    strncpy(kernel_Main.paths[PTH_SOUNDS], "../Sounds/", 127);
 
-    /*Next check the path file*/
-    if((checkFile = fopen("../Path.txt","r")) != NULL)
-    {
-        if(file_Check_Line("Graphics:", checkFile))
-        {
-            kernel_SetPath(checkFile, PTH_GRAPHIC);
-        }
-        if(file_Check_Line("Fonts:", checkFile))
-        {
-            kernel_SetPath(checkFile, PTH_FONT);
-        }
-        if(file_Check_Line("Logs:", checkFile))
-        {
-            kernel_SetPath(checkFile, PTH_LOG);
-            kernel_SetPath(checkFile, PTH_FILELOG);
-        }
-        if(file_Check_Line("Sounds:", checkFile))
-        {
-            kernel_SetPath(checkFile, PTH_SOUNDS);
-        }
-    }
-    else
+	kernel_Main.totalPaths = 0;
+	kernel_Main.paths = NULL;
+
+
+	/*Check if the path file exists and try to load any required paths from it*/
+	if((checkFile = fopen("../Path.txt", "r")) != NULL)
+	{
+		while(file_GetSubString(pathName, 123, ':', checkFile) != 0)
+		{
+			file_GetSubString(pathAddress, 127, '\n', checkFile);
+			kernel_AddPath(pathName, pathAddress);
+		}
+	}
+	else
     {
         printf("Warning: Could not find Path.txt in directory, using default paths\n");
+		kernel_AddPath("Textures", "../Textures/");
+		kernel_AddPath("Fonts", "../Fonts/");
+		kernel_AddPath("Log", "../Log/log.txt");
+		kernel_AddPath("FileLog", "../Log/file.txt");
+		kernel_AddPath("Sounds", "../Sounds/");
     }
 
     return;
@@ -146,6 +160,7 @@ void kernel_SetPaths(void)
 
 int kernel_Init(const char *name)
 {
+	char *path = NULL;
     printf("Engine Initializing V %d.%d.%d\n", K_VERS_1, K_VERS_2, K_VERS_3);
 
     if(mem_Init())
@@ -157,14 +172,16 @@ int kernel_Init(const char *name)
     kernel_Set_Defaults();
     kernel_SetPaths();
 
-    if(file_Init(kernel_Main.paths[PTH_FILELOG]))
+	kernel_GetPath("PTH_FileLog", &path);
+    if(file_Init(path))
 	{
 		printf("\tFailed to load file manager\n");
 		return 1;
 	}
 
     #ifndef NO_LOG
-    kernel_Main.log = file_Open(kernel_Main.paths[PTH_LOG], "w");
+	kernel_GetPath("PTH_Log", &path);
+    kernel_Main.log = file_Open(path, "w");
 
     if(kernel_Main.log == NULL)
     {
@@ -181,7 +198,7 @@ int kernel_Init(const char *name)
 
 	mth_FillAngles();
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
     if(kernel_Init_SDL())
         return 1;
@@ -190,7 +207,8 @@ int kernel_Init(const char *name)
 
 	ker_Report_Video();
 
-	surf_Init(kernel_Main.paths[PTH_GRAPHIC]);
+	kernel_GetPath("PTH_Textures", &path);
+	surf_Init(path);
 
 	if(control_Init(kernel_Main.control_Flags))
 	{
@@ -198,7 +216,8 @@ int kernel_Init(const char *name)
 		return 1;
 	}
 
-	if(font_Init(kernel_Main.paths[PTH_FONT]))
+	kernel_GetPath("PTH_Fonts", &path);
+	if(font_Init(path))
 	{
 		return 1;
 	}
@@ -394,6 +413,10 @@ int kernel_Quit(void)
     puts("File");
     file_Quit();
 
+	puts("Paths");
+	if(kernel_Main.paths != NULL)
+		mem_Free(kernel_Main.paths);
+
     puts("Memory");
     mem_Quit(); /* Keep this last*/
 
@@ -519,11 +542,6 @@ Uint32 *ker_colourKey(void)
 FILE *ker_Log(void)
 {
     return kernel_Main.log;
-}
-
-char *kernel_GetPath(unsigned int index)
-{
-    return kernel_Main.paths[index];
 }
 
 Base_State *ker_BaseState(void)

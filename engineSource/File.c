@@ -328,7 +328,7 @@ int file_Close(FILE *file_Name)
 }
 
 /*Get a string from a file until max_Length characters have been read or until
-EOF, \n or terminatingChar have been found. Returns length of string or -1 on error*/
+EOF, \n or terminatingChar have been found. Does not reset the file pointer. Returns length of string or -1 on error*/
 int file_GetSubString(char *stringBuffer, int max_Length, char terminatingChar, FILE *file)
 {
     int x = 0;

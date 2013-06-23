@@ -44,7 +44,7 @@ Ui_Path *uiPath_Create(Ui_Spine_Entity *spEntity, int layer, Ui_Path *owner)
         break;
 
         case UIE_BUTTON:
-        newPath->typeEntity.button = newPath->entity;
+        newPath->typeEntity.button = (Ui_Button *)newPath->entity;
 
         /*Add a link to the path so that if the entity was to be deleted,
         the path->entity pointer would be set to NULL*/
@@ -555,7 +555,7 @@ int uiPath_SelectScroll(Ui_ButtonScroll *scroll, int state)
 int uiMap_Setup(Ui_Map *map, Timer *srcTimer)
 {
     int x = 0;
-    const char *controlName;
+    const char *controlName = "NULL";
 
     /*Setup the control events*/
     for(x = 0; x < UI_DIRECTIONS; x++)

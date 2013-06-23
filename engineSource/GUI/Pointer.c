@@ -265,11 +265,11 @@ void uiPointer_UpdateGrid(Ui_Pointer *pnt)
 
         if(remainder >= 0.5f)
         {
-            pnt->gridPosition.x = pnt->gridOrigin.x + (pnt->gridW * (int)(gridMulti + 1.00f));
+            pnt->gridPosition.x = (float)(pnt->gridOrigin.x + (pnt->gridW * (int)(gridMulti + 1.00f)));
         }
         else
         {
-            pnt->gridPosition.x = pnt->gridOrigin.x + (pnt->gridW * (int)(gridMulti));
+            pnt->gridPosition.x = (float)(pnt->gridOrigin.x + (pnt->gridW * (int)(gridMulti)));
         }
     }
 
@@ -280,11 +280,11 @@ void uiPointer_UpdateGrid(Ui_Pointer *pnt)
 
         if(remainder >= 0.5f)
         {
-            pnt->gridPosition.y = pnt->gridOrigin.y + (pnt->gridH * (int)(gridMulti + 1.00f));
+            pnt->gridPosition.y = (float)(pnt->gridOrigin.y + (pnt->gridH * (int)(gridMulti + 1.00f)));
         }
         else
         {
-            pnt->gridPosition.y = pnt->gridOrigin.y + (pnt->gridH * (int)(gridMulti));
+            pnt->gridPosition.y = (float)(pnt->gridOrigin.y + (pnt->gridH * (int)(gridMulti)));
         }
     }
 

@@ -12,22 +12,18 @@
 #define K_VERS_2 7
 #define K_VERS_3 0
 
-enum PATH_TYPES
-{
-    PTH_GRAPHIC = 0,
-    PTH_FONT = 1,
-    PTH_LOG = 2,
-    PTH_FILELOG = 3,
-    PTH_SOUNDS = 4,
-    PTH_ARRAYEND = 5
-};
-
 /*Used for tracking allocated memory structures*/
 enum M_FREE
 {
     M_FREE = 0, /*Not to track a structure (must be deleted manually)*/
     A_FREE = 1 /*Object manager should remove the structure on cleanup*/
 };
+
+struct pe_Path
+{
+	char pathName[127];
+	char pathAddress[127];
+} typedef PE_Path;
 
 struct pe_Kernel
 {
@@ -54,7 +50,8 @@ struct pe_Kernel
 
     FILE *log;
 
-    char paths[PTH_ARRAYEND][128];
+    PE_Path **paths;
+	unsigned int totalPaths;
 
     SDL_Surface *screen;
 
@@ -72,7 +69,9 @@ int kernel_Quit(void);
 
 void kernel_Set_Defaults(void);
 
-void kernel_SetPath(FILE *fileAtLine, unsigned int index);
+void kernel_AddPath(char *pathName, char *pathAddress);
+int kernel_GetPath(char *pathName, char **pathAddress);
+
 
 void kernel_SetPaths(void);
 
@@ -102,8 +101,6 @@ Uint32 ker_Video_Flags(void);
 Uint32 ker_Surface_Type(void);
 
 FILE *ker_Log(void);
-
-char *kernel_GetPath(unsigned int index);
 
 Base_State *ker_BaseState(void);
 

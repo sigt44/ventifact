@@ -8,11 +8,18 @@
 *.o
 *.so
 *.a
+*.obj
 
 #Ignore logs and databases
 *.log
 *.sql
 *.sqlite
+*.tlog
+
+#ignore IDE stuff
+*.idb
+*.pdb
+*.lastbuildstate
 
 #Ignore OS generated files
 .DS_Store
