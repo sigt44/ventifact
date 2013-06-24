@@ -135,7 +135,7 @@ static void BFA_TestLevel(Ui_Button *button)
     char *testMapName = "_EditorTestMap";
     char *testMapNameExt = "_EditorTestMap.map";
 
-    vLevel_Save(&editor->level, testMapName);
+    vLevel_Save(&editor->level, kernel_GetPath("PTH_VentCustomLevels"), testMapName);
 
     /*Make sure the correct player unit is tested in the map*/
     if(editor->level.header.forcedPlayerUnit == VLEVEL_FORCE_ANY)
@@ -173,7 +173,7 @@ static void BFA_SaveLevel(Ui_Button *button)
     }
     else if(*state == 1) /*Yes*/
     {
-        vLevel_Save(&editor->level, editor->level.header.name);
+        vLevel_Save(&editor->level, kernel_GetPath("PTH_VentCustomLevels"), editor->level.header.name);
 
         veMenu_WindowOk(levelSpine, "Spine:SaveConfirmed", "Save complete.", ker_Screen_Width()/2, ker_Screen_Height()/2, -1, -1, levelSpine->layer + 1);
     }
@@ -346,6 +346,33 @@ void vLE_SetupLevelEditMenu(Vent_Level_Editor *editor)
     return;
 }
 
+/*Toggle the level directory between the game levels and custom levels*/
+static void BFA_ToggleLevelDirectory(Ui_Button *button)
+{
+    Vent_Level_Editor *editor = button->info->dataArray[0];
+    Ui_Spine *loadSpine = button->info->dataArray[1];
+	int *toggle = (int *)button->info->dataArray[2];
+
+	if(*toggle == 0)
+	{
+		*toggle = 1;
+		uiSpine_SetEntityUpdate(loadSpine, "TextBox:CustomDIR", UIS_ENTITY_UPDATE, 1);
+		uiSpine_SetEntityUpdate(loadSpine, "Scroll:CustomLevel", UIS_ENTITY_UPDATE, 1);
+		uiSpine_SetEntityUpdate(loadSpine, "TextBox:GameDIR", UIS_ENTITY_NO_UPDATE, 0);
+		uiSpine_SetEntityUpdate(loadSpine, "Scroll:MainLevel", UIS_ENTITY_NO_UPDATE, 0);
+	}
+	else
+	{
+		*toggle = 0;
+		uiSpine_SetEntityUpdate(loadSpine, "TextBox:CustomDIR", UIS_ENTITY_NO_UPDATE, 0);
+		uiSpine_SetEntityUpdate(loadSpine, "Scroll:CustomLevel", UIS_ENTITY_NO_UPDATE, 0);
+		uiSpine_SetEntityUpdate(loadSpine, "TextBox:GameDIR", UIS_ENTITY_UPDATE, 1);
+		uiSpine_SetEntityUpdate(loadSpine, "Scroll:MainLevel", UIS_ENTITY_UPDATE, 1);
+	}
+
+	return;
+}
+
 /*Close the load level menu*/
 static void BFA_CloseLoadLevelMenu(Ui_Button *button)
 {
@@ -404,11 +431,17 @@ static void BFA_CloseLoadLevelMenu(Ui_Button *button)
 
 void vLE_ResetLevelFileScroll(Vent_Level_Editor *editor, Ui_Spine *loadSpine)
 {
-    uiSpine_DeleteEntity(loadSpine, uiSpine_GetEntityBase(loadSpine, "Scroll:LevelNames"));
+    uiSpine_DeleteEntity(loadSpine, uiSpine_GetEntityBase(loadSpine, "Scroll:MainLevel"));
+	uiSpine_DeleteEntity(loadSpine, uiSpine_GetEntityBase(loadSpine, "Scroll:CustomLevel"));
+
 
     uiSpine_AddScroll(loadSpine,
-                      vLE_SetupLevelFileScroll(editor, loadSpine),
-                      "Scroll:LevelNames");
+                      vLE_SetupLevelFileScroll(editor, loadSpine, kernel_GetPath("PTH_VentLevels")),
+                      "Scroll:MainLevel");
+
+	uiSpine_AddScroll(loadSpine,
+                      vLE_SetupLevelFileScroll(editor, loadSpine,  kernel_GetPath("PTH_VentCustomLevels")),
+                      "Scroll:CustomLevel");
 
     editor->levelEdit.selectedLevel = "None";
 
@@ -417,7 +450,7 @@ void vLE_ResetLevelFileScroll(Vent_Level_Editor *editor, Ui_Spine *loadSpine)
     return;
 }
 
-Ui_ButtonScroll *vLE_SetupLevelFileScroll(Vent_Level_Editor *editor, Ui_Spine *spine)
+Ui_ButtonScroll *vLE_SetupLevelFileScroll(Vent_Level_Editor *editor, Ui_Spine *spine, char *directory)
 {
     Ui_ButtonScroll *scroll = NULL;
     Ui_Button *button = NULL;
@@ -430,14 +463,13 @@ Ui_ButtonScroll *vLE_SetupLevelFileScroll(Vent_Level_Editor *editor, Ui_Spine *s
     Vent_Level_AttributesEditor *lEditor = &editor->levelEdit;
 
     strcpy(fileDIR, "../Levels/");
-    //strcpy(fileDIR, "../LevelsOld/");
 
     if(lEditor->levelNames != NULL)
     {
-        list_ClearAll(&lEditor->levelNames);
+        /*list_ClearAll(&lEditor->levelNames);*/
     }
 
-    scroll = veMenu_ScrollFile(fileDIR, ".map", &lEditor->levelNames, 40, 50, spine->layer, &spine->sTimer);
+    scroll = veMenu_ScrollFile(directory, ".map", &lEditor->levelNames, 40, 50, spine->layer, &spine->sTimer);
     scroll->rotate = 0;
 
     for(x = 0, levelNames = lEditor->levelNames; x < scroll->totalButtons; x++, levelNames = levelNames->next)
@@ -478,6 +510,18 @@ void vLE_SetupLevelLoadMenu(Vent_Level_Editor *editor, Ui_Spine *baseSpine)
 
     uiTextBox_AddText(uiSpine_GetEntity(loadSpine,"TextBox:SelectedLevel"),
                      0, 0, "%s", dataStruct_Create(1, &lEditor->selectedLevel));
+	/*Add in the level directory*/
+	uiSpine_AddTextBox(loadSpine,
+       uiTextBox_CreateBase(205, 18, loadSpine->layer, 0, NULL, font_Get(2, 13), tColourBlack, &loadSpine->sTimer),
+       "TextBox:GameDIR");
+	uiTextBox_AddText(uiSpine_GetEntity(loadSpine,"TextBox:GameDIR"),
+                     0, 0, "GAME", NULL);
+
+	uiSpine_AddTextBox(loadSpine,
+       uiTextBox_CreateBase(205, 18, loadSpine->layer, 0, NULL, font_Get(2, 13), tColourBlack, &loadSpine->sTimer),
+       "TextBox:CustomDIR");
+	uiTextBox_AddText(uiSpine_GetEntity(loadSpine,"TextBox:CustomDIR"),
+                     0, 0, "CUSTOM", NULL);
 
 
     /*Add in the close button*/
@@ -486,18 +530,25 @@ void vLE_SetupLevelLoadMenu(Vent_Level_Editor *editor, Ui_Spine *baseSpine)
     /*Add in the main buttons*/
     uiSpine_AddButton(loadSpine, veMenu_ButtonBasic(0, 0, "Load", &loadSpine->sTimer, loadSpine->layer, &BFA_CloseLoadLevelMenu, &MABFH_ButtonHover, dataStruct_CreateType("ppd", editor, loadSpine, 1)), "Button:Load");
     uiSpine_AddButton(loadSpine, veMenu_ButtonBasic(0, 0, "New", &loadSpine->sTimer, loadSpine->layer, &BFA_CloseLoadLevelMenu, &MABFH_ButtonHover, dataStruct_CreateType("ppd", editor, loadSpine, 2)), "Button:New");
+    uiSpine_AddButton(loadSpine, veMenu_ButtonBasic(15, 185, "Switch DIR", &loadSpine->sTimer, loadSpine->layer, &BFA_ToggleLevelDirectory, &MABFH_ButtonHover, dataStruct_CreateType("ppd", editor, loadSpine, 0)), "Button:Switch");
     uiSpine_AddButton(loadSpine, veMenu_ButtonBasic(0, 0, "Cancel", &loadSpine->sTimer, loadSpine->layer, &BFA_CloseLoadLevelMenu, &MABFH_ButtonHover, dataStruct_CreateType("ppd", editor, loadSpine, 0)), "Button:Cancel");
 
     uiSpine_AlignEntities(loadSpine, 15, 210, 10, SCR_H, 3, "Button:Load", "Button:New", "Button:Cancel");
 
     uiSpine_AddScroll(loadSpine,
-                      vLE_SetupLevelFileScroll(editor, loadSpine),
-                      "Scroll:LevelNames");
+                      vLE_SetupLevelFileScroll(editor, loadSpine, kernel_GetPath("PTH_VentLevels")),
+                      "Scroll:MainLevel");
+
+	uiSpine_AddScroll(loadSpine,
+                      vLE_SetupLevelFileScroll(editor, loadSpine,  kernel_GetPath("PTH_VentCustomLevels")),
+                      "Scroll:CustomLevel");
 
     /*Setup the button control map*/
     veMenu_SetSpineControl(loadSpine);
     uiSpine_MapEntity(loadSpine);
 
+	uiSpine_SetEntityUpdate(loadSpine, "TextBox:CustomDIR", UIS_ENTITY_NO_UPDATE, 0);
+	uiSpine_SetEntityUpdate(loadSpine, "Scroll:CustomLevel", UIS_ENTITY_NO_UPDATE, 0);
 
     return;
 }

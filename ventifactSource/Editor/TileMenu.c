@@ -552,8 +552,7 @@ static void BFA_AddRemoveImage(Ui_Button *button)
 
     /*Get the path to the image to load*/
 
-    strcpy(fullPath, kernel_GetPath("PTH_Textures"));
-    strcat(fullPath, "Level/Custom/");
+    strcpy(fullPath, kernel_GetPath("PTH_VentCustomTextures"));
     strcat(fullPath, editor->tileEdit.customGraphicName);
 
     /*Make sure the custom graphic ID is < 0 to show it is custom*/

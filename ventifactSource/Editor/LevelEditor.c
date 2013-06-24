@@ -250,7 +250,7 @@ Ui_Button *vLE_CloseButton(void (*onActivate)(Ui_Button *button), Data_Struct *o
 
 void vLE_SaveLevel(Vent_Level_Editor *editor)
 {
-    vLevel_Save(&editor->level, editor->level.header.name);
+    vLevel_Save(&editor->level, kernel_GetPath("PTH_VentCustomLevels"), editor->level.header.name);
 
     veMenu_WindowOk(&editor->spine, "Spine:SaveConfirmed", "Save complete.", ker_Screen_Width()/2, ker_Screen_Height()/2, -1, -1, 100);
 
@@ -931,7 +931,7 @@ void vLE_ControlsPlace(void *info)
                 }
             }
 
-            text_Draw_Arg(25, 65, ker_Screen(), font_Get(2, 13), &tColourBlack, VL_HUD, 500, "Tile total: %d", editor->level.header.numTiles);
+            text_Draw_Arg(25, 85, ker_Screen(), font_Get(2, 13), &tColourBlack, VL_HUD, 500, "Tile total: %d", editor->level.header.numTiles);
 
             break;
 

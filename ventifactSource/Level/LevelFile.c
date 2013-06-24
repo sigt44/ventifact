@@ -320,13 +320,14 @@ static void vLevel_SaveEdge(Vent_Level *l, FILE *save)
     Description -
     Function that saves a level in the /Level/ folder.
 
-    2 arguments:
+    3 arguments:
     Vent_Level *l - the level to save
+	char *directory - the name of the directory to save the level in
     char *name - the name to save the level as, .map will be appended to this
 */
-void vLevel_Save(Vent_Level *l, char *name)
+void vLevel_Save(Vent_Level *l, char *directory, char *name)
 {
-    char *saveFolder = kernel_GetPath("PTH_VentLevels");
+    char *saveFolder = directory;
     char *saveName = (char *)mem_Malloc(strlen(saveFolder) + strlen(name) + strlen(".map") + 1, __LINE__, __FILE__);
 
     int x = 0;
