@@ -67,6 +67,7 @@ typedef struct Vent_Unit {
 
 
     float friction; /*simple friction coefficient*/
+    float frictionFrame; /*simple friction coefficient, resets per frame*/
 
     int graphicTurn;
     int pGraphicTurn;
@@ -75,6 +76,7 @@ typedef struct Vent_Unit {
     unsigned int direction; /* Direction of unit*/
 
     float maxSpeed; /* The max speed of the unit*/
+    float maxSpeedFrame; /* The max speed of the unit, resets each frame*/
     float maxForce; /* The max force of the unit*/
 
     float steeringForce; /* The steering force of the unit*/

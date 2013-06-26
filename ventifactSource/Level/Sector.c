@@ -332,7 +332,9 @@ int vSector_MapTileInsert(Vent_Sector *s, void *tile)
         t->numSector ++;
 
         /*If the tile will need some sort of collision detection*/
-        if(t->base.collision > 0 || flag_Check(&t->base.stateFlags, TILESTATE_BUILDABLE) == 1)
+        if(t->base.collision > 0 ||
+           flag_Check(&t->base.stateFlags, TILESTATE_BUILDABLE) == 1 ||
+           t->base.type == TILE_WATER)
         {
             /*Push it into another list so that they can be found easier*/
             list_Stack(&s->collisionTiles, t, 0);

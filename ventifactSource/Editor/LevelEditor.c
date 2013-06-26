@@ -200,7 +200,7 @@ void vLE_SetupTiles(Vent_Level_Editor *editor)
 
     /*Water template*/
     sTile = sprite_Setup(sprite_Create(), 1, VL_GROUND, &editor->spine.sTimer, 1, frame_CreateBasic(0, vLevel_SurfaceRetrieve(editor->level.surfacesLoaded, TILEG_WATER, 0), M_FREE));
-    tile = vTile_Create(0, 0, TILE_DECOR, TILEG_WATER, 0, VL_GROUND, 0,  0, TILESTATE_IDLE, 0, 0, sTile);
+    tile = vTile_Create(0, 0, TILE_WATER, TILEG_WATER, 0, VL_GROUND, 0,  0, TILESTATE_IDLE, 0, 0, sTile);
 
     list_Stack(&tEditor->loadedTiles, tile, TILEG_WATER);
 
