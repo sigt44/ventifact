@@ -119,7 +119,7 @@ static void MM_GameMenu(Ui_Button *button)
 
     Vent_Campaign *c = NULL;
 
-            c = vCampaign_Create("GP2X", 0, 0, 0, 0, 10,
+            /*c = vCampaign_Create("GP2X", 0, 0, 0, 0, 10,
                 vCaLvl_Create("Level One", "Level_One.map", 0, 0, 0, 50),
                 vCaLvl_Create("Level Two", "Level_Two.map", 0, 0, 0, 50),
                 vCaLvl_Create("Level Three", "Level_Three.map", 0, 0, 0, 200),
@@ -134,7 +134,7 @@ static void MM_GameMenu(Ui_Button *button)
 
         vCampaign_SaveBase(c);
         vCampaign_Clean(c);
-        mem_Free(c);
+        mem_Free(c);*/
 
     if(menu->playerLoaded == 0)
     {

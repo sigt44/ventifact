@@ -29,6 +29,7 @@ SDL_Surface *surf_Offset(unsigned int x, unsigned int y, SDL_Surface *source, in
 
 SDL_Surface *surf_SimpleBox(int width, int height, Uint16P *baseColour, Uint16P *borderColour, int borderThickness);
 
+int surf_LoadDIR(SDL_Surface **image, char *directory, char *name, int autoFreeID);
 int surf_Load(SDL_Surface **image,char *name,int autoFreeID);
 
 void surf_Blit(int x, int y, SDL_Surface *source, SDL_Surface *destination, SDL_Rect *clip);

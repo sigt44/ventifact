@@ -99,7 +99,7 @@ SDL_Surface *vLevel_SurfaceRetrieveRotation(Vent_LevelSurface *lvlSurface, int r
 
 int vLevel_SurfaceNewID(struct list *s);
 
-void vLevel_SurfaceInsert(struct list **s, char *fullPath, int graphicType);
+void vLevel_SurfaceInsert(struct list **s, char *directory, char *name, int graphicType);
 
 void vLevel_SurfaceInsertRotation(struct list *s, int graphicID, int rotationDeg);
 

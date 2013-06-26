@@ -140,7 +140,7 @@ static Ui_ButtonScroll *MM_CreateCampaignScroll(Base_State *gState)
 
     int x = 0;
 
-    scroll = veMenu_ScrollFile("../Campaigns", ".cam", &menu->campaignNameList, 40, 40, VL_HUD + 2, &menu->timer);
+    scroll = veMenu_ScrollFile(kernel_GetPath("PTH_VentCampaigns"), ".cam", &menu->campaignNameList, 40, 40, VL_HUD + 2, &menu->timer);
 
     currentList = menu->campaignNameList;
 
@@ -232,6 +232,11 @@ static void MM_QuitCampaign(Ui_Button *button)
         if(menu->player->playCampaign == 1 && menu->player->campaign != NULL)
         {
             menu->selectedCampaign = menu->player->campaign->name;
+            menu->player->levelDirectory = kernel_GetPath("PTH_VentLevels");
+        }
+        else
+        {
+            menu->player->levelDirectory = kernel_GetPath("PTH_VentCustomLevels");
         }
 
         /*Repopulate the level scroll*/
@@ -267,7 +272,7 @@ static void MM_ChooseLevel(Ui_Button *button)
 
     menu->player->levelChosen = button->info->dataArray[1];
 
-    vLevel_LoadHeader(&menu->levelHeader, menu->player->levelChosen);
+    vLevel_LoadHeader(&menu->levelHeader, menu->player->levelDirectory, menu->player->levelChosen);
 
     return;
 }
@@ -289,7 +294,7 @@ Ui_ButtonScroll *MM_CreateLevelScroll(Base_State *gState)
 {
     struct menu_Game *menu = gState->info;
 
-    DIR *levelDIR = opendir("../Levels");
+    DIR *levelDIR = NULL;
     //DIR *levelDIR = opendir("../LevelsOld");
     struct list *levelList = NULL;
     struct list *currentList = NULL;
@@ -318,9 +323,11 @@ Ui_ButtonScroll *MM_CreateLevelScroll(Base_State *gState)
 
     if(menu->player->playCampaign == 0)
     {
+        levelDIR = opendir(kernel_GetPath("PTH_VentCustomLevels"));
         if(levelDIR == NULL)
         {
             printf("Error cannot open level directory\n");
+            abort();
         }
 
         levelList = file_Get_Extension_List(levelDIR, ".map");
@@ -348,6 +355,7 @@ Ui_ButtonScroll *MM_CreateLevelScroll(Base_State *gState)
         }
 
         list_ClearAll(&levelList);
+        closedir(levelDIR);
     }
     else
     {
@@ -370,8 +378,6 @@ Ui_ButtonScroll *MM_CreateLevelScroll(Base_State *gState)
             currentList = currentList->next;
         }
     }
-
-    closedir(levelDIR);
 
     uiButtonScroll_SetHoverState(scroll, &MABFH_HoverLine);
 

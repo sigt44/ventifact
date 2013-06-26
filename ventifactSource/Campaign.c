@@ -187,7 +187,7 @@ Vent_Campaign *vCampaign_LoadBase(char *campaignName)
 
 void vCampaign_SaveBase(Vent_Campaign *c)
 {
-    char *saveDIR = "../Campaigns/";
+    char *saveDIR = kernel_GetPath("PTH_VentCampaigns");
 
     char *campaignSave = (char *)mem_Malloc(strlen(saveDIR) + strlen(c->name) + strlen(".cam") + 1, __LINE__, __FILE__);
 

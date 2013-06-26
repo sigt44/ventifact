@@ -10,7 +10,7 @@
 
 #define K_VERS_1 0
 #define K_VERS_2 7
-#define K_VERS_3 0
+#define K_VERS_3 1
 
 /*Used for tracking allocated memory structures*/
 enum M_FREE
@@ -69,6 +69,7 @@ int kernel_Quit(void);
 
 void kernel_Set_Defaults(void);
 
+int kernel_CheckPath(char *pathName);
 void kernel_AddPath(char *pathName, char *pathAddress);
 char *kernel_GetPath(char *pathName);
 

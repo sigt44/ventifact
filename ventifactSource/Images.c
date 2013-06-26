@@ -273,7 +273,25 @@ int image_Init(void)
     surf_Load(&ve_Surfaces.tileRoad[0], "Level/Road/roadH.png", A_FREE);
     surf_Load(&ve_Surfaces.tileRoad[1], "Level/Road/roadCUL.png", A_FREE);
 
-    surf_Load(&ve_Surfaces.tileWall, "Level/Wall/wall.png", A_FREE);
+    surf_Load(&ve_Surfaces.tileWall[0], "Level/Wall/wall1.png", A_FREE);
+    surf_Load(&ve_Surfaces.tileWall[1], "Level/Wall/wall2.png", A_FREE);
+    surf_Load(&ve_Surfaces.tileWall[2], "Level/Wall/wall3.png", A_FREE);
+
+    surf_Load(&ve_Surfaces.tileGrassTuft, "Level/grass.png", A_FREE);
+
+    surf_Load(&ve_Surfaces.tileRock[0], "Level/rock1.png", A_FREE);
+    surf_Load(&ve_Surfaces.tileRock[1], "Level/rock2.png", A_FREE);
+
+    surf_Load(&ve_Surfaces.tileTree[0], "Level/tree1.png", A_FREE);
+    surf_Load(&ve_Surfaces.tileTree[1], "Level/tree2.png", A_FREE);
+    surf_Load(&ve_Surfaces.tileTree[2], "Level/snowTree1.png", A_FREE);
+
+    surf_Load(&ve_Surfaces.tileMud, "Level/mud.png", A_FREE);
+    surf_Load(&ve_Surfaces.tileDirtRoad, "Level/Road/dirtRoad.png", A_FREE);
+
+    surf_Load(&ve_Surfaces.tileTrainPart, "Level/trainpart.png", A_FREE);
+
+    surf_Load(&ve_Surfaces.tilePower, "Level/largePower.png", A_FREE);
 
     surf_Load(&ve_Surfaces.unknown, "Level/noTile.png", A_FREE);
 

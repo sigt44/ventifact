@@ -22,6 +22,7 @@ void vPlayer_Setup(Vent_Player *p, char *name3Char)
     p->startingUnit = UNIT_TANK;
 
     p->levelChosen = "None";
+    p->levelDirectory = kernel_GetPath("PTH_VentLevels");
 
     p->campaignList = NULL;
     p->totalCampaigns = 0;
@@ -136,7 +137,7 @@ void vPlayer_LoadCampaignScores(Vent_Player *player)
             vCaScores_Save(&player->campaignScores);
         }
 
-        vCaScores_Report(&player->campaignScores);
+        /*vCaScores_Report(&player->campaignScores);*/
     }
 
     return;

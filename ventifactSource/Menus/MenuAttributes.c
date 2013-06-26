@@ -389,7 +389,7 @@ Ui_Button *veMenu_ButtonOption(char *optionText, Data_Struct *textVars, TTF_Font
     upToVariable = string_Target(highlightText, '%');
 
 	/*upToVariable should now point to the location of memory where '%' resides, if it dosnt exist do not edit highlight text*/
-	if(upToVariable != highlightText && *(upToVariable - 1) == ' ') /*If there is a space before the variable sign cut that off as well*/
+	if(upToVariable != NULL && upToVariable != highlightText && *(upToVariable - 1) == ' ') /*If there is a space before the variable sign cut that off as well*/
 		*(upToVariable - 1)= '\0';
 
     TTF_SizeText(font, highlightText, &width, &height);

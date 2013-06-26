@@ -102,6 +102,7 @@ typedef struct Vent_Level_Editor
     Base_State *bState; /*Points to the base state that contains the editor*/
     Vent_Level level; /*Current level being edited*/
     char *levelName;
+    char *directory;
 
     Ui_Spine spine; /*Spine to hold the menus*/
 

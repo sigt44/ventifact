@@ -80,7 +80,15 @@ struct surface_Holder
     SDL_Surface *tileSnow;
     SDL_Surface *tileSand;
     SDL_Surface *tileRoad[2];
-    SDL_Surface *tileWall;
+    SDL_Surface *tileWall[3];
+    SDL_Surface *tileGrassTuft;
+    SDL_Surface *tileRock[2];
+    SDL_Surface *tileTree[3];
+    SDL_Surface *tileMud;
+    SDL_Surface *tileTrainPart;
+    SDL_Surface *tilePower;
+    SDL_Surface *tileDirtRoad;
+
     SDL_Surface *unknown;
 
     /*Effects*/

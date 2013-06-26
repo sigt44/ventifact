@@ -180,6 +180,16 @@ int surf_Load(SDL_Surface **image, char *name, int autoFreeID)
 	return 0;
 }
 
+int surf_LoadDIR(SDL_Surface **image, char *directory, char *name, int autoFreeID)
+{
+    int returnVar = 0;
+    char *oldDIR = surf_C.surfacesDIR;
+    surf_C.surfacesDIR = directory;
+    returnVar = surf_Load(image, name, autoFreeID);
+    surf_C.surfacesDIR = oldDIR;
+
+    return returnVar;
+}
 
 void surf_Blit(int x, int y, SDL_Surface *source, SDL_Surface *destination, SDL_Rect *clip)
 {

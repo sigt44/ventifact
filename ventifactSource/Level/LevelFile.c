@@ -21,7 +21,7 @@ const int levelTagVersions[NUM_TAGS] = {0,
                                         0,
                                         0,
                                         0,
-                                        0};
+                                        1};
 
 enum
 {
@@ -42,7 +42,7 @@ enum
 #define SUPPLY_VERSIONS 1
 #define NODE_VERSIONS 1
 #define EDGE_VERSIONS 1
-#define CUSTOMSURFACE_VERSIONS 1
+#define CUSTOMSURFACE_VERSIONS 2
 
 void (*vLevel_LoadHeaderVer[HEADER_VERSIONS])(Vent_Level_Header *header, Level_Tag *tag, FILE *levelFile) =
     {
@@ -71,7 +71,8 @@ void (*vLevel_LoadEdgeVer[EDGE_VERSIONS])(Vent_Level *l, Level_Tag *tag, FILE *l
 
 void (*vLevel_LoadCustomSurfaceVer[CUSTOMSURFACE_VERSIONS])(Vent_Level *l, Level_Tag *tag, FILE *levelFile) =
     {
-        &vLevel_LoadCustomSurface_0
+        &vLevel_LoadCustomSurface_0,
+        &vLevel_LoadCustomSurface_1
     };
 
 /*
@@ -467,14 +468,64 @@ void vLevel_LoadCustomSurface_0(Vent_Level *l, Level_Tag *tag, FILE *levelFile)
     int x = 0;
     int y = 0;
 
+    char *directory = NULL;
+    char *name = NULL;
+
     /*Load the custom surfaces*/
     for(x = 0; x < tag->amount; x++)
     {
         fscanf(levelFile, "%s%d%d", surfacePathLimit, &ID, &numRotated);
 
-        file_Log(ker_Log(), P_OUT, "Loading custom surface(%d) from: %s\n", ID, surfacePathLimit);
+        /*update for version 1 of load custom surface*/
+        string_Split(surfacePathLimit, &directory, &name, '/');
 
-        vLevel_SurfaceInsert(&l->surfacesLoaded, surfacePathLimit, ID);
+
+        file_Log(ker_Log(), P_OUT, "Loading custom surface(%d) from: %s --> [%s] [%s]\n", ID, surfacePathLimit, directory, name);
+
+        vLevel_SurfaceInsert(&l->surfacesLoaded, directory, name, ID);
+        mem_Free(directory);
+        mem_Free(name);
+        if(numRotated > 0)
+        {
+            //file_Log(ker_Log(), 1, "Creating %d rotations of surface(%d)\n", numRotated, ID);
+
+            for(y = 0; y < numRotated; y++)
+            {
+                fscanf(levelFile, "%d", &rotationDeg);
+                vLevel_SurfaceInsertRotation(l->surfacesLoaded, ID, rotationDeg);
+
+                //file_Log(ker_Log(), 1, "\t%d rotation\n", rotationDeg);
+            }
+        }
+
+        fscanf(levelFile, "\n");
+    }
+
+    return;
+}
+
+void vLevel_LoadCustomSurface_1(Vent_Level *l, Level_Tag *tag, FILE *levelFile)
+{
+    const int version = 0;
+
+    char surfaceName[255];
+
+    int ID = 0;
+
+    int numRotated = 0;
+    int rotationDeg = 0;
+
+    int x = 0;
+    int y = 0;
+
+    /*Load the custom surfaces*/
+    for(x = 0; x < tag->amount; x++)
+    {
+        fscanf(levelFile, "%s%d%d", surfaceName, &ID, &numRotated);
+
+        file_Log(ker_Log(), P_OUT, "Loading custom surface(%d) from: %s%s\n", ID, kernel_GetPath("PTH_VentCustomLevels"), surfaceName);
+
+        vLevel_SurfaceInsert(&l->surfacesLoaded, kernel_GetPath("PTH_VentCustomLevels"), surfaceName, ID);
 
         if(numRotated > 0)
         {
@@ -604,15 +655,16 @@ void vLevel_LoadEdge_0(Vent_Level *l, Level_Tag *tag, FILE *levelFile)
     Description -
     Loads a level from a file.
 
-    4 arguments:
+    5 arguments:
     Vent_Level *l - The level structure that the level will be loaded into.
     void *game - The Vent_Game structure.
     Timer *srcTime - The source timer the level will use.
+    char *name - The directory name of the level to load.
     char *name - The file name of the level to load.
 */
-void vLevel_Load(Vent_Level *l, void *game, Timer *srcTime, char *name)
+void vLevel_Load(Vent_Level *l, void *game, Timer *srcTime, char *directory, char *name)
 {
-    char *loadFolder = kernel_GetPath("PTH_VentLevels");
+    char *loadFolder = directory;
     char *loadName = (char *)mem_Malloc(strlen(loadFolder) + strlen(name) + 1, __LINE__, __FILE__);
 
     FILE *load = NULL;
@@ -715,13 +767,14 @@ void vLevel_Load(Vent_Level *l, void *game, Timer *srcTime, char *name)
     Description -
     Loads a level header from a file.
 
-    2 arguments:
+    3 arguments:
     Vent_Level_Header *header - The level header to be loaded into.
+    char *directory - The directory name of the level to load.
     char *name - The file name of the level to load.
 */
-void vLevel_LoadHeader(Vent_Level_Header *header, char *name)
+void vLevel_LoadHeader(Vent_Level_Header *header, char *directory, char *name)
 {
-    char *loadFolder = "../Levels/";
+    char *loadFolder = directory;
     char *loadName = (char *)mem_Malloc(strlen(loadFolder) + strlen(name) + 1, __LINE__, __FILE__);
 
     int finishedLoading = 0;
@@ -770,514 +823,6 @@ void vLevel_LoadHeader(Vent_Level_Header *header, char *name)
     fclose(load);
 
     mem_Free(loadName);
-
-    return;
-}
-
-/*
-    Function: vLevel_LoadOld
-
-    Description -
-    This function loads a level (Without full compatibility) using an out of date level structure
-
-    4 arguments:
-    Vent_Level *l - the structure to load the level into
-    struct list **unitList - the head of a list that is used to store units
-    Timer *srcTime - the timer the level will use
-    char *name - the name of the level file (without the extension)
-*/
-void vLevel_LoadOld(Vent_Level *l, void *game, Timer *srcTime, char *name)
-{
-    char *saveFolder = "../LevelsOld/";
-    char *saveName = (char *)mem_Malloc(strlen(saveFolder) + strlen(name) + 1, __LINE__, __FILE__);
-
-    /*Old unit spawn structure varibales*/
-    int spawnX = 0;
-    int spawnY = 0;
-    int spawnAmount = 0;
-    int spawnTime = 0;
-    int spawnTeam = 0;
-    int spawnType = 0;
-    int spawnAi = 0;
-    int spawnDead = 0;
-
-    /*Old tile variables*/
-    int subType = 0;
-
-    int read;
-    int numTiles = 0;
-    char textBuffer[255];
-    char *floorTexture = NULL;
-
-    int ID = 0;
-    int important = 0;
-
-    int graphicTypeArray[8] = {
-        TILEG_NULL,
-        TILEG_CUSTOM,
-        TILEG_WALL_H,
-        TILEG_DECOR,
-        TILEG_CITADELBASE,
-        TILEG_BUILDINGBASE,
-        TILEG_ROAD_H,
-        TILEG_WATER
-        };
-    char surfacePath[255];
-
-    char *newCustomPath = "../Textures/Level/Custom/";
-    char *texturePath = NULL;
-
-    Vent_Tile *t = NULL;
-    Sprite *sTile = NULL;
-
-    FILE *load = NULL;
-    Data_Struct *aiData = NULL;
-
-    vLevel_Setup(l, NULL, 0, 0);
-
-    strcpy(saveName, saveFolder);
-    strcat(saveName, name);
-    /*strcat(saveName, ".map");*/
-
-
-    load = fopen(saveName, "r");
-
-    if(load == NULL)
-    {
-        printf("Error cannot load old level %s\n", saveName);
-
-        mem_Free(saveName);
-        return;
-    }
-
-    /*ignore any comments at the top of the file*/
-    fscanf(load, "%s", textBuffer);
-    if(strcmp(textBuffer,"/") == 0)
-    {
-        fscanf(load, "%s", textBuffer);
-        while(strcmp(textBuffer,"/") != 0)
-        {
-            fscanf(load, "%s", textBuffer);
-        }
-    }
-
-    /*load in the name of the level*/
-    fscanf(load, "%s", textBuffer);
-    if(strcmp(textBuffer,"Level_Name:") != 0)
-    {
-        printf("Could not read level name marker, %s\n",textBuffer);
-        return;
-    }
-
-    fscanf(load, "%s", l->header.name);
-
-    /*load the amount of points awarded for winning the level*/
-    fscanf(load, "%s",textBuffer);
-    if(strcmp(textBuffer,"Win_Points:") != 0)
-    {
-        printf("Could not read win points marker, %s\n",textBuffer);
-        return;
-    }
-    fscanf(load,"%d",&ID);
-
-    /*load in the location of the graphic to be used as the ground*/
-    fscanf(load,"%s", textBuffer);
-    if(strcmp(textBuffer,"Base_Dir:") != 0)
-    {
-        printf("Could not read level base dir marker, %s\n",textBuffer);
-        return;
-    }
-    fscanf(load,"%s", textBuffer);
-
-    /*point floorTexture to the position after the '.' in a file name*/
-    floorTexture = string_Target(textBuffer, '.');
-
-    switch(*(floorTexture-5))
-    {
-        case 'w':
-        l->header.baseTileID = TILEG_SNOW;
-        break;
-
-        case 'd':
-        l->header.baseTileID = TILEG_SAND;
-        break;
-
-        default:
-        l->header.baseTileID = TILEG_GRASS;
-        break;
-    }
-
-    /*load in the level size, width then height*/
-    fscanf(load,"%s", textBuffer);
-    if(strcmp(textBuffer,"Level_Size:") != 0)
-    {
-        printf("Could not read level size marker, %s\n",textBuffer);
-        return;
-    }
-
-    fscanf(load,"%d",&l->header.width);
-
-    fscanf(load,"%d",&l->header.height);
-
-    /*load in the position where the enemy unit start*/
-    fscanf(load,"%s", textBuffer);
-    if(strcmp(textBuffer,"Enemy_Starting_Cords:") != 0)
-    {
-        printf("Could not read enemy starting name marker, %s\n",textBuffer);
-        return;
-    }
-
-    fscanf(load,"%d",&read);
-    l->header.startLoc[TEAM_1].x = read;
-    fscanf(load,"%d",&read);
-    l->header.startLoc[TEAM_1].y = read;
-
-    /*load in the position where the player unit start*/
-    fscanf(load,"%s", textBuffer);
-    if(strcmp(textBuffer,"Player_Starting_Cords:") != 0)
-    {
-        printf("Could not read player starting name marker, %s\n",textBuffer);
-        return;
-    }
-
-    fscanf(load,"%d",&read);
-    l->header.startLoc[TEAM_PLAYER].x = read;
-    fscanf(load,"%d",&read);
-    l->header.startLoc[TEAM_PLAYER].y = read;
-    l->header.numSides = 2;
-
-    /*start loading in the tiles*/
-    fscanf(load,"%s", textBuffer);
-    if(strcmp(textBuffer,"Map_Tile_Cords:") != 0)
-    {
-        printf("Could not read level tile starting name marker, %s\n",textBuffer);
-        return;
-    }
-
-    while(fscanf(load, "%d", &read) > 0)
-    {
-        t = (Vent_Tile *)mem_Malloc(sizeof(Vent_Tile), __LINE__, __FILE__);
-        sTile = sprite_Create();
-        important = 0;
-
-        numTiles ++;
-
-        t->base.position.x = read;
-
-        fscanf(load, "%d%d%d%d%d", &t->base.position.y, &t->base.type, &subType, &t->base.group, &t->base.collision);
-        t->base.team = 0;
-
-        if(t->base.type > 7)
-        {
-            printf("Warning tile type > 7 (%d) setting to 0\n", t->base.type);
-            t->base.type = 0;
-        }
-
-        t->base.type = graphicTypeArray[t->base.type];
-        t->base.stateFlags = TILESTATE_IDLE;
-        t->citadel = NULL;
-        t->base.rotationDeg = 0;
-
-        //printf("Type = %d\n", t->type);
-
-        switch(t->base.type)
-        {
-            case TILEG_CUSTOM:
-
-                fscanf(load,"%d",&t->base.graphicType);
-
-                if(t->base.graphicType > 0)
-                    t->base.graphicType = -t->base.graphicType;
-
-                fscanf(load,"%s", textBuffer);
-
-                texturePath = string_Target(textBuffer, '.');
-
-                while(*(texturePath) != '/')
-                {
-                    texturePath --;
-                }
-
-                texturePath ++;
-
-                strcpy(surfacePath, newCustomPath);
-                strcat(surfacePath, texturePath);
-
-                if(vLevel_SurfaceRetrieve(l->surfacesLoaded, t->base.graphicType, 0) == NULL)
-                    vLevel_SurfaceInsert(&l->surfacesLoaded, surfacePath, t->base.graphicType);
-
-                t->base.type = TILE_CUSTOM;
-
-            break;
-
-            case TILEG_WALL_H:
-
-                t->base.graphicType = TILEG_WALL_H;
-
-                if(subType == 1)
-                {
-                    t->base.rotationDeg = 90;
-                }
-
-                t->base.type = TILE_DECOR;
-
-            break;
-
-            case TILEG_ROAD_H:
-
-                switch(subType)
-                {
-                    case 0:
-                        t->base.graphicType = TILEG_ROAD_H;
-                    break;
-
-                    case 1:
-                        t->base.graphicType = TILEG_ROAD_H;
-                        t->base.rotationDeg = 90;
-                    break;
-
-                    case 2:
-                        t->base.graphicType = TILEG_ROAD_CUL;
-                        t->base.rotationDeg = 270;
-                    break;
-
-                    case 3:
-                        t->base.graphicType = TILEG_ROAD_CUL;
-                    break;
-
-                    case 4:
-                        t->base.graphicType = TILEG_ROAD_CUL;
-                        t->base.rotationDeg = 180;
-                    break;
-
-                    case 5:
-                        t->base.graphicType = TILEG_ROAD_CUL;
-                        t->base.rotationDeg = 90;
-                    break;
-                }
-
-                t->base.type = TILE_DECOR;
-
-            break;
-
-            case TILEG_CITADELBASE:
-
-                t->base.stateFlags = TILESTATE_BUILDABLE;
-                t->base.graphicType = TILEG_CITADELBASE;
-
-                t->base.type = TILE_CITADELBASE;
-
-            break;
-
-            case TILEG_BUILDINGBASE:
-
-                t->base.stateFlags = TILESTATE_BUILDABLE;
-                t->base.graphicType = TILEG_BUILDINGBASE;
-
-                 t->base.type = TILE_BUILDINGBASE;
-
-            break;
-
-            case TILEG_WATER:
-
-                t->base.graphicType = TILEG_WATER;
-
-                t->base.type = TILE_WATER;
-            break;
-
-            default:
-
-                t->base.graphicType = TILEG_NULL;
-                t->base.type = TILE_NULL;
-
-            break;
-        }
-
-        if(t->base.group != 0 && flag_Check(&t->base.stateFlags, TILESTATE_BUILDABLE) != 1)
-        {
-            file_Log(ker_Log(), 0, "Warning: Adding tile with bad group %d, correcting...\n", t->base.group);
-
-            t->base.group = 0;
-        }
-
-        if(t->base.collision > 0)
-            t->base.collision --;
-
-        fscanf(load, "%d%d%d%d", &t->base.healthStarting, &t->base.team, &important, &t->base.layer);
-
-        if(vLevel_SurfaceRetrieve(l->surfacesLoaded, t->base.graphicType, t->base.rotationDeg) == NULL)
-        {
-            printf("Error cant file required graphic for tile, type (%d) %d, rotation %d\n", t->base.type, t->base.graphicType, t->base.rotationDeg);
-        }
-
-        sprite_Setup(sTile, 1, t->base.layer, srcTime, 1, frame_CreateBasic(0, vLevel_SurfaceRetrieve(l->surfacesLoaded, t->base.graphicType, t->base.rotationDeg), M_FREE));
-
-        t->base.width = sprite_Width(sTile);
-        t->base.height = sprite_Height(sTile);
-
-        t->sImage = sTile;
-        vTile_Init(t);
-
-        list_Stack(&l->tiles, t, 0);
-
-        if(important == 1)
-            flag_On(&t->base.stateFlags, TILESTATE_IMPORTANT);
-
-        /*If the tile is important, add it in to another list so it can be tracked more easily.*/
-        if(flag_Check(&t->base.stateFlags, TILESTATE_IMPORTANT) == 1)
-        {
-            depWatcher_AddBoth(&t->depWatcher, &l->importantTiles, 0);
-        }
-
-        if(t->base.healthStarting > 0)
-        {
-            depWatcher_AddBoth(&t->depWatcher, &l->destroyableTiles, 0);
-        }
-
-        if(t->base.healthStarting > 0)
-        {
-            /*Create the health bar 5 pixels above the tile*/
-            t->healthBar = (Vent_HealthBar *)mem_Malloc(sizeof(Vent_HealthBar), __LINE__, __FILE__);
-            vHealthBar_Setup(t->healthBar, NULL, t->base.position.x + (t->base.width/2), t->base.position.y - 10, 80, 8, 4, colourGreen);
-        }
-        else
-            t->healthBar = NULL;
-
-
-        l->header.numTiles ++;
-
-        //file_Log(ker_Log(), 1, "(%d)Tile added, t%d g: %d, h:%d w:%d h:%d l:%d\n",numTiles, t->type, t->group, t->health, t->width, t->height, t->layer);
-    }
-
-    l->header.numCustomSurfaces = vLevel_GetCustomSurfaces(l);
-
-    /*load in the unit spawns*/
-    fscanf(load,"%s", textBuffer);
-    if(strcmp(textBuffer,"Ressuply_Info:") != 0)
-    {
-        printf("Could not read ressuply info marker, %s\n",textBuffer);
-         return;
-    }
-
-
-    while(fscanf(load, "%d", &read) > 0)
-    {
-        spawnX = read;
-
-        fscanf(load, "%d %d %d %d %d %d %d", &spawnY, &spawnTeam, &spawnType, &spawnAmount, &spawnTime, &spawnAi, &spawnDead);
-
-            if(spawnDead == 0)
-                spawnDead = 1;
-            else
-                spawnDead = 0;
-
-            /*Ai
-            0 - Wander -> SUPPLY_AI_NONE
-            1 - Attack citadel -> SUPPLY_AI_ATTACKBUILDING
-            2 - Attack target -> SUPPLY_AI_ATTACKPLAYER
-            3 - Attack important building -> SUPPLY_AI_ATTACKBUILDING
-            */
-            switch(spawnAi)
-            {
-                default:
-                case 0:
-                spawnAi = SUPPLY_AI_NONE;
-                aiData = NULL;
-                break;
-
-                case 1:
-                case 3:
-                spawnAi = SUPPLY_AI_ATTACKBUILDING;
-                aiData = vSupply_AiToData_AttackBuilding();
-                break;
-
-                case 2:
-                spawnAi = SUPPLY_AI_ATTACKPLAYER;
-                aiData = vSupply_AiToData_AttackPlayer();
-                break;
-            }
-
-            list_Push(&l->unitSupply,
-                vSupply_Create(game, srcTime, spawnAmount, spawnTime, 1, spawnDead, spawnTeam, spawnType, spawnX, spawnY, 0, spawnAi, aiData),
-                0);
-            l->header.numSupply ++;
-
-            //file_Log(ker_Log(), 1, "Setting up a unit ressuply at %d %d, time: %d, amount:%d, dw: %d\n", spawnX, spawnY, spawnTime, spawnAmount, spawnDead);
-    }
-
-    fclose(load);
-
-    vLevel_LoadOldGraph(l, l->header.name);
-
-    mem_Free(saveName);
-
-    file_Log(ker_Log(), 1, "Warning: Old level structure loaded - %s\n", l->header.name);
-
-    return;
-}
-
-void vLevel_LoadOldGraph(Vent_Level *l, char *name)
-{
-    B_Graph *graph = &l->pathGraph;
-
-    char *graphFolder = "../LevelsOld/";
-
-    char *graphName = (char *)mem_Malloc(strlen(graphFolder) + strlen(name) + strlen("_Path.path") + 1, __LINE__, __FILE__);
-
-    struct graphNode nodeLoad;
-    struct graphEdge edgeLoad;
-
-    int eCheck = 1;
-    int totalNodes = 0;
-
-    FILE *openGraph = NULL;
-
-    strcpy(graphName, graphFolder);
-    strcat(graphName, name);
-    strcat(graphName, "_Path.path");
-
-    openGraph = fopen(graphName,"rb");
-
-    if(openGraph == NULL)
-    {
-        printf("Could not read a path for level %s -> %s\n", name, graphName);
-        return;
-    }
-
-    //printf("Loading nodes\n");
-
-    /*Obtain the total amount of nodes in the graph*/
-    eCheck = fread(&totalNodes,sizeof(int),1,openGraph);
-
-    /*Get the data for a graphNode structure until there should be no more nodes*/
-    eCheck = fread(&nodeLoad, sizeof(struct graphNode), 1, openGraph);
-    while(eCheck == 1 && totalNodes > 0)
-    {
-        /*Place it into the newer node structure*/
-        //printf("Adding in node(%d) - %d %d\n", nodeLoad.index, nodeLoad.box.x, nodeLoad.box.y);
-        graph_Add_Node(graph, node_Create(nodeLoad.index, nodeLoad.box.x, nodeLoad.box.y));
-
-        eCheck = fread(&nodeLoad,sizeof(struct graphNode),1,openGraph);
-
-        totalNodes--;
-    }
-
-    node_Report_List(graph->nodes);
-
-    /*Get the data for graphEdge until there are no more*/
-    eCheck = fread(&edgeLoad,sizeof(struct graphEdge),1,openGraph);
-    while(eCheck == 1)
-    {
-        //printf("Adding in edge: %d %d cost %d\n", edgeLoad.from, edgeLoad.to, edgeLoad.cost);
-        graph_Add_Edge_DistanceWeight(graph, edge_Create_Index(graph->nodes, edgeLoad.from, edgeLoad.to, edgeLoad.cost));
-        //graph->pEdgeStart = create_pEdge(graph->pEdgeStart,get_node(graph->nodeStart,edgeLoad.from),get_node(graph->nodeStart,edgeLoad.to),edgeLoad.cost);
-        //printf("Loading edge joins at %d %d and cost is %d\n",edgeLoad.from,edgeLoad.to,edgeLoad.cost);
-        eCheck = fread(&edgeLoad,sizeof(struct graphEdge),1,openGraph);
-    }
-
-    fclose(openGraph);
-
-    mem_Free(graphName);
 
     return;
 }

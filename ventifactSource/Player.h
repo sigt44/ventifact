@@ -31,6 +31,7 @@ typedef struct playerState
     int totalCampaigns;
 
     char *levelChosen;
+    char *levelDirectory;
 
     struct list *campaignList; /*holds the data for the current state of all campaigns the player has played*/
 

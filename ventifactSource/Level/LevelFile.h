@@ -41,23 +41,21 @@ struct graphEdge
 
 void vLevel_Save(Vent_Level *l, char *directory, char *name);
 
-void vLevel_Load(Vent_Level *l, void *game, Timer *srcTime, char *name);
+void vLevel_Load(Vent_Level *l, void *game, Timer *srcTime, char *directory, char *name);
 
-void vLevel_LoadHeader(Vent_Level_Header *header, char *name);
+void vLevel_LoadHeader(Vent_Level_Header *header, char *directory, char *name);
 
 void vLevel_LoadHeader_0(Vent_Level_Header *header, Level_Tag *tag, FILE *levelFile);
 
 void vLevel_LoadTile_0(Vent_Level *l, Level_Tag *tag, FILE *levelFile);
 
 void vLevel_LoadCustomSurface_0(Vent_Level *l, Level_Tag *tag, FILE *levelFile);
+void vLevel_LoadCustomSurface_1(Vent_Level *l, Level_Tag *tag, FILE *levelFile);
 
 void vLevel_LoadSupply_0(Vent_Level *l, void *game, Level_Tag *tag, FILE *levelFile);
 
 void vLevel_LoadNode_0(Vent_Level *l, Level_Tag *tag, FILE *levelFile);
 
 void vLevel_LoadEdge_0(Vent_Level *l, Level_Tag *tag, FILE *levelFile);
-
-void vLevel_LoadOld(Vent_Level *l, void *game, Timer *srcTime, char *name);
-void vLevel_LoadOldGraph(Vent_Level *l, char *name);
 
 #endif

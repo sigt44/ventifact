@@ -92,7 +92,7 @@ void vGame_SetupLevel(Vent_Game *g, char *levelName)
     g->level = (Vent_Level *)mem_Malloc(sizeof(Vent_Level), __LINE__, __FILE__);
 
     //vLevel_Load(g->level, g, &g->gTimer, "Level_TenTest.map");
-    vLevel_Load(g->level, g, &g->gTimer, levelName);
+    vLevel_Load(g->level, g, &g->gTimer, g->player->levelDirectory, levelName);
     //vLevel_LoadOld(g->level, g, &g->gTimer, levelName);
     //vLevel_Setup(g->level, "TestMap", 800, 800, 1);
     /*void vTile_Setup(Vent_Tile *t, int x, int y, int type, int graphicType, int collision, int layer, int health, int state, int group, Sprite *sprite)*/

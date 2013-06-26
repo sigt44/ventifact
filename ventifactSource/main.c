@@ -12,8 +12,31 @@
 #include "Config.h"
 #include "Sounds.h"
 
+static int vDirectory_Init(void)
+{
+    if(kernel_CheckPath("PTH_VentLevels") == 0)
+        kernel_AddPath("VentLevels", "../Levels/");
+    if(kernel_CheckPath("PTH_VentCampaigns") == 0)
+        kernel_AddPath("VentCampaigns", "../Campaigns/");
+    if(kernel_CheckPath("PTH_VentConfig") == 0)
+        kernel_AddPath("VentConfig", "../config.cfg");
+    if(kernel_CheckPath("PTH_VentSaves") == 0)
+        kernel_AddPath("VentSaves", "../Saves/");
+    if(kernel_CheckPath("PTH_VentScores") == 0)
+        kernel_AddPath("VentScores", "../Scores/");
+    if(kernel_CheckPath("PTH_VentCustomLevels") == 0)
+        kernel_AddPath("VentCustomLevels", "../");
+    if(kernel_CheckPath("PTH_VentCustomTextures") == 0)
+        kernel_AddPath("VentCustomTextures", "../");
+
+    return 0;
+}
+
 static int vInit(void)
 {
+    /*Setup the correct directories*/
+    vDirectory_Init();
+
     /*Load in the images*/
     image_Init();
 
@@ -75,8 +98,12 @@ int main( int argc, char *argv[] )
         return init;
     }
     else
-	{				
-	    vInit();
+	{
+	    if((init = vInit()) != 0)
+        {
+            printf("Error could not initialise ventifact [%d]\n", init);
+            return init;
+        }
 
         /*Setup and push in the main menu state*/
         baseState_Setup(&mainState, "Main menu", Menu_Main_Init, Menu_Main_Controls, Menu_Main_Logic, Menu_Main_Render, Menu_Main_Exit, &mainState);

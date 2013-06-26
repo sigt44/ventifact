@@ -148,7 +148,7 @@ static void BFA_TestLevel(Ui_Button *button)
     }
 
     editor->testPlayer.levelChosen = testMapNameExt;
-
+    editor->testPlayer.levelDirectory = kernel_GetPath("PTH_VentCustomLevels");
     printf("Testing %s\n", editor->testPlayer.levelChosen);
     baseState_Push(ker_BaseStateList(), baseState_Create("Game test state", Game_Init, Game_Controls, Game_Logic, Game_Render, Game_Exit, &editor->testPlayer));
 
@@ -356,6 +356,8 @@ static void BFA_ToggleLevelDirectory(Ui_Button *button)
 	if(*toggle == 0)
 	{
 		*toggle = 1;
+		editor->directory = kernel_GetPath("PTH_VentCustomLevels");
+
 		uiSpine_SetEntityUpdate(loadSpine, "TextBox:CustomDIR", UIS_ENTITY_UPDATE, 1);
 		uiSpine_SetEntityUpdate(loadSpine, "Scroll:CustomLevel", UIS_ENTITY_UPDATE, 1);
 		uiSpine_SetEntityUpdate(loadSpine, "TextBox:GameDIR", UIS_ENTITY_NO_UPDATE, 0);
@@ -364,6 +366,8 @@ static void BFA_ToggleLevelDirectory(Ui_Button *button)
 	else
 	{
 		*toggle = 0;
+		editor->directory = kernel_GetPath("PTH_VentLevels");
+
 		uiSpine_SetEntityUpdate(loadSpine, "TextBox:CustomDIR", UIS_ENTITY_NO_UPDATE, 0);
 		uiSpine_SetEntityUpdate(loadSpine, "Scroll:CustomLevel", UIS_ENTITY_NO_UPDATE, 0);
 		uiSpine_SetEntityUpdate(loadSpine, "TextBox:GameDIR", UIS_ENTITY_UPDATE, 1);
@@ -402,7 +406,7 @@ static void BFA_CloseLoadLevelMenu(Ui_Button *button)
         if(strcmp(lEditor->selectedLevel, "None") != 0)
         {
             vLevel_Clean(&editor->level);
-            vLevel_Load(&editor->level, NULL, &editor->spine.sTimer, lEditor->selectedLevel);
+            vLevel_Load(&editor->level, NULL, &editor->spine.sTimer, editor->directory, lEditor->selectedLevel);
             //vLevel_LoadOld(&editor->level, NULL, &editor->spine.sTimer, lEditor->selectedLevel);
 
             vLE_InitLevel(editor);
@@ -431,9 +435,15 @@ static void BFA_CloseLoadLevelMenu(Ui_Button *button)
 
 void vLE_ResetLevelFileScroll(Vent_Level_Editor *editor, Ui_Spine *loadSpine)
 {
+    Ui_Spine_Entity *sE = uiSpine_GetEntityBase(loadSpine, "TextBox:GameDIR");
+
     uiSpine_DeleteEntity(loadSpine, uiSpine_GetEntityBase(loadSpine, "Scroll:MainLevel"));
 	uiSpine_DeleteEntity(loadSpine, uiSpine_GetEntityBase(loadSpine, "Scroll:CustomLevel"));
 
+    if(editor->levelEdit.levelNames != NULL)
+    {
+        list_ClearAll(&editor->levelEdit.levelNames);
+    }
 
     uiSpine_AddScroll(loadSpine,
                       vLE_SetupLevelFileScroll(editor, loadSpine, kernel_GetPath("PTH_VentLevels")),
@@ -442,6 +452,21 @@ void vLE_ResetLevelFileScroll(Vent_Level_Editor *editor, Ui_Spine *loadSpine)
 	uiSpine_AddScroll(loadSpine,
                       vLE_SetupLevelFileScroll(editor, loadSpine,  kernel_GetPath("PTH_VentCustomLevels")),
                       "Scroll:CustomLevel");
+
+    if(sE->update == UIS_ENTITY_NO_UPDATE)
+    {
+        uiSpine_SetEntityUpdate(loadSpine, "TextBox:CustomDIR", UIS_ENTITY_UPDATE, 1);
+		uiSpine_SetEntityUpdate(loadSpine, "Scroll:CustomLevel", UIS_ENTITY_UPDATE, 1);
+		uiSpine_SetEntityUpdate(loadSpine, "TextBox:GameDIR", UIS_ENTITY_NO_UPDATE, 0);
+		uiSpine_SetEntityUpdate(loadSpine, "Scroll:MainLevel", UIS_ENTITY_NO_UPDATE, 0);
+	}
+	else
+	{
+		uiSpine_SetEntityUpdate(loadSpine, "TextBox:CustomDIR", UIS_ENTITY_NO_UPDATE, 0);
+		uiSpine_SetEntityUpdate(loadSpine, "Scroll:CustomLevel", UIS_ENTITY_NO_UPDATE, 0);
+		uiSpine_SetEntityUpdate(loadSpine, "TextBox:GameDIR", UIS_ENTITY_UPDATE, 1);
+		uiSpine_SetEntityUpdate(loadSpine, "Scroll:MainLevel", UIS_ENTITY_UPDATE, 1);
+	}
 
     editor->levelEdit.selectedLevel = "None";
 
@@ -455,24 +480,25 @@ Ui_ButtonScroll *vLE_SetupLevelFileScroll(Vent_Level_Editor *editor, Ui_Spine *s
     Ui_ButtonScroll *scroll = NULL;
     Ui_Button *button = NULL;
 
-    char fileDIR[256];
-
     int x = 0;
     struct list *levelNames = NULL;
 
     Vent_Level_AttributesEditor *lEditor = &editor->levelEdit;
 
-    strcpy(fileDIR, "../Levels/");
-
-    if(lEditor->levelNames != NULL)
+    if(lEditor->levelNames != NULL && lEditor->levelNames->previous != NULL)
     {
-        /*list_ClearAll(&lEditor->levelNames);*/
+        levelNames = lEditor->levelNames->previous;
     }
 
-    scroll = veMenu_ScrollFile(directory, ".map", &lEditor->levelNames, 40, 50, spine->layer, &spine->sTimer);
+    scroll = veMenu_ScrollFile(directory, ".map", &lEditor->levelNames, 40, 60, spine->layer, &spine->sTimer);
     scroll->rotate = 0;
 
-    for(x = 0, levelNames = lEditor->levelNames; x < scroll->totalButtons; x++, levelNames = levelNames->next)
+    if(levelNames == NULL)
+        levelNames = lEditor->levelNames;
+    else
+       levelNames = levelNames->next;
+
+    for(x = 0; x < scroll->totalButtons; x++, levelNames = levelNames->next)
     {
         button = uiButtonScroll_GetButton(scroll, x);
         button->onActivate = BFunc_SetString;
@@ -512,16 +538,16 @@ void vLE_SetupLevelLoadMenu(Vent_Level_Editor *editor, Ui_Spine *baseSpine)
                      0, 0, "%s", dataStruct_Create(1, &lEditor->selectedLevel));
 	/*Add in the level directory*/
 	uiSpine_AddTextBox(loadSpine,
-       uiTextBox_CreateBase(205, 18, loadSpine->layer, 0, NULL, font_Get(2, 13), tColourBlack, &loadSpine->sTimer),
+       uiTextBox_CreateBase(20, 35, loadSpine->layer, 0, NULL, font_Get(2, 13), tColourBlack, &loadSpine->sTimer),
        "TextBox:GameDIR");
 	uiTextBox_AddText(uiSpine_GetEntity(loadSpine,"TextBox:GameDIR"),
-                     0, 0, "GAME", NULL);
+                     0, 0, "Campaign", NULL);
 
 	uiSpine_AddTextBox(loadSpine,
-       uiTextBox_CreateBase(205, 18, loadSpine->layer, 0, NULL, font_Get(2, 13), tColourBlack, &loadSpine->sTimer),
+       uiTextBox_CreateBase(20, 35, loadSpine->layer, 0, NULL, font_Get(2, 13), tColourBlack, &loadSpine->sTimer),
        "TextBox:CustomDIR");
 	uiTextBox_AddText(uiSpine_GetEntity(loadSpine,"TextBox:CustomDIR"),
-                     0, 0, "CUSTOM", NULL);
+                     0, 0, "Custom", NULL);
 
 
     /*Add in the close button*/

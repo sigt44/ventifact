@@ -61,6 +61,8 @@ int string_ReplaceChar(char *string, char replace, char replaceWith);
 
 int string_CatLimit(char *editString, char *catString, int *limit);
 
+int string_Split(char *string, char **stringA, char **stringB, char splitChar);
+
 /*Get a string from a file until max_Length characters have been read or until
 EOF, \n or terminatingChar have been found. Returns length of string or -1 on error*/
 int file_GetSubString(char *stringBuffer, int max_Length, char terminatingChar, FILE *file);

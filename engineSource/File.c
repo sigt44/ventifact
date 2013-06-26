@@ -247,7 +247,7 @@ int string_CatLimit(char *editString, char *catString, int *limit)
     return 0;
 }
 
-/*Returns a pointer to the first found requested character in the string*/
+/*Returns a pointer to the last found requested character in the string*/
 char *string_Target(char *string, char targetChar)
 {
     int l = strlen(string);
@@ -259,8 +259,39 @@ char *string_Target(char *string, char targetChar)
         targetPointer --;
     }
 
+    if(l == 0 && *targetPointer != targetChar)
+        return NULL;
+
     return targetPointer;
 }
+
+/*Splits a string at the last occurance of splitChar. Each new string is allocated
+memory*/
+int string_Split(char *string, char **stringA, char **stringB, char splitChar)
+{
+    char temp;
+    char *split = string_Target(string, splitChar);
+
+    if(split == NULL)
+        return 1;
+
+    split ++;
+    temp = *split;
+
+    *split = '\0';
+
+    *stringA = mem_Malloc(sizeof(char) * (strlen(string) + 1), __LINE__, __FILE__);
+    strncpy(*stringA, string, strlen(string) + 1);
+
+    *split = temp;
+
+    *stringB = mem_Malloc(strlen(split) + 1, __LINE__, __FILE__);
+    strncpy(*stringB, split, strlen(split) + 1);
+
+    return 0;
+}
+
+
 
 int string_ReplaceChar(char *string, char replace, char replaceWith)
 {
@@ -349,15 +380,22 @@ int file_GetSubString(char *stringBuffer, int max_Length, char terminatingChar, 
                 stringBuffer[x] = character;
             }
         }
+
+        if(x == max_Length)
+        {
+            stringBuffer[x - 1] = '\0';
+        }
     }
     else
     {
         return -1;
     }
 
-    return x;
+    if(character == terminatingChar)
+        return x;
+    else
+        return 0;
 }
-
 
 void file_Clear(void)
 {

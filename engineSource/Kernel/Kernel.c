@@ -81,6 +81,24 @@ void kernel_Set_Defaults(void)
     return;
 }
 
+int kernel_CheckPath(char *pathName)
+{
+    unsigned int x = 0;
+	PE_Path *path = NULL;
+
+	for(; x < kernel_Main.totalPaths; x++)
+	{
+	    path = (PE_Path *)(kernel_Main.paths + x);
+
+		if(strcmp(path->pathName, pathName) == 0)
+		{
+            return 1;
+		}
+	}
+
+	return 0;
+}
+
 char *kernel_GetPath(char *pathName)
 {
 	unsigned int x = 0;
@@ -96,7 +114,8 @@ char *kernel_GetPath(char *pathName)
 		}
 	}
 
-	/*printf("Error could not find path %s\n", pathName);*/
+	printf("Error could not find path %s\n", pathName);
+	abort();
 
 	return "NULL";
 }
@@ -109,7 +128,7 @@ void kernel_AddPath(char *pathName, char *pathAddress)
 	PE_Path *path = NULL;
 	strncat(realPathName, pathName, 123);
 
-	if(strcmp(pathName, kernel_GetPath(realPathName)) == 0)
+	if(kernel_CheckPath(realPathName) == 1)
 	{
 		/*printf("Error already a path with name %s\n", realPathName);*/
 		return;
@@ -130,6 +149,8 @@ void kernel_AddPath(char *pathName, char *pathAddress)
 
 	strncpy(path->pathName, realPathName, 127);
 	strncpy(path->pathAddress, pathAddress, 127);
+
+	printf("Adding path [%s][%s]\n", path->pathName, path->pathAddress);
 
 	return;
 }

@@ -267,19 +267,16 @@ int vLevel_SurfaceDisable(struct list **surfaceList, int graphicType)
 
     3 arguments:
     struct list **s - the head of the linked list that the surface is to be inserted
-    char *fullPath - the path of the surface file, should not exceed 254 characters
+    char *directory - the directory of the surface file, should not exceed 254 characters
+    char *name - the name of the surface file, should not exceed 254 characters
     int graphicType - the ID to give the surface
 */
-void vLevel_SurfaceInsert(struct list **s, char *fullPath, int graphicType)
+void vLevel_SurfaceInsert(struct list **s, char *directory, char *name, int graphicType)
 {
-    char pBuffer[255];
-
     SDL_Surface *newSurface = NULL;
 
-    strncpy(pBuffer, fullPath, 254);
-
-    if(strcmp(fullPath, "None") != 0)
-        surf_Load(&newSurface, pBuffer, M_FREE);
+    if(strcmp(name, "None") != 0)
+        surf_LoadDIR(&newSurface, directory, name, M_FREE);
 
     /*if unable to load the custom surface from a file, use the error surface*/
     if(newSurface == NULL)
@@ -291,7 +288,7 @@ void vLevel_SurfaceInsert(struct list **s, char *fullPath, int graphicType)
         vLevel_SurfaceRemove(s, graphicType);
     }
 
-    list_Push_Sort(s, vLevelSurface_Create(fullPath, newSurface, graphicType), graphicType);
+    list_Push_Sort(s, vLevelSurface_Create(name, newSurface, graphicType), graphicType);
 
     return;
 }
@@ -544,12 +541,25 @@ void vLevel_Setup(Vent_Level *l, char *name, int width, int height)
     list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileBuilding, TILEG_BUILDINGBASE), TILEG_BUILDINGBASE);
     list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileCitadel, TILEG_CITADELBASE), TILEG_CITADELBASE);
     list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileWater, TILEG_WATER), TILEG_WATER);
-    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileWall, TILEG_WALL_H), TILEG_WALL_H);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileWall[0], TILEG_WALL_H), TILEG_WALL_H);
     list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileRoad[0], TILEG_ROAD_H), TILEG_ROAD_H);
     list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileRoad[1], TILEG_ROAD_CUL), TILEG_ROAD_CUL);
     list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileGrass, TILEG_GRASS), TILEG_GRASS);
     list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileSnow, TILEG_SNOW), TILEG_SNOW);
     list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileSand, TILEG_SAND), TILEG_SAND);
+
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileWall[1], TILEG_WALL2), TILEG_WALL2);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileWall[2], TILEG_WALL3), TILEG_WALL3);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileRock[0], TILEG_ROCK1), TILEG_ROCK1);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileRock[1], TILEG_ROCK2), TILEG_ROCK2);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileGrassTuft, TILEG_GRASSTUFT), TILEG_GRASSTUFT);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileTree[0], TILEG_TREE1), TILEG_TREE1);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileTree[1], TILEG_TREE2), TILEG_TREE2);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileTree[2], TILEG_TREE3), TILEG_TREE3);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileMud, TILEG_MUD), TILEG_MUD);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileTrainPart, TILEG_TRAINPART), TILEG_TRAINPART);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tilePower, TILEG_POWER), TILEG_POWER);
+    list_Push(&l->surfacesLoaded, vLevelSurface_Create(NULL, ve_Surfaces.tileDirtRoad, TILEG_DIRTROAD), TILEG_DIRTROAD);
 
     l->srcTime = NULL;
 

@@ -554,6 +554,7 @@ void vLE_Init(void *info)
 
     /*Add in the main header text*/
     editor->levelName = "None";
+    editor->directory = kernel_GetPath("PTH_VentLevels");
 
     /*Create the sprite for the main buttons and place it into the spine*/
     uiSpine_AddSprite(&editor->spine, sprite_SetPos(sprite_Setup(sprite_Create(), 1, VL_HUD + 1, &editor->spine.sTimer, 1,

@@ -547,13 +547,7 @@ static void BFA_AddRemoveImage(Ui_Button *button)
     Vent_Level_TileEditor *tEditor = &editor->tileEdit;
     int originalID = *graphicID;
 
-    char fullPath[255];
 	char *path;
-
-    /*Get the path to the image to load*/
-
-    strcpy(fullPath, kernel_GetPath("PTH_VentCustomTextures"));
-    strcat(fullPath, editor->tileEdit.customGraphicName);
 
     /*Make sure the custom graphic ID is < 0 to show it is custom*/
     if(*graphicID >= 0)
@@ -564,7 +558,7 @@ static void BFA_AddRemoveImage(Ui_Button *button)
 
     if(add == 1) /*Add the image*/
     {
-        vLevel_SurfaceInsert(&editor->level.surfacesLoaded, fullPath, *graphicID);
+        vLevel_SurfaceInsert(&editor->level.surfacesLoaded, kernel_GetPath("PTH_VentCustomTextures"), editor->tileEdit.customGraphicName, *graphicID);
 
         /*Find a new valid custom graphic ID*/
         tEditor->customGraphicID = vLevel_SurfaceNewID(editor->level.surfacesLoaded);
