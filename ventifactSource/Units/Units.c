@@ -215,7 +215,6 @@ static Vector2D vUnit_SteeringForce(Vent_Unit *u)
 {
     Vector2D netForce = {0.0f, 0.0f};
     Vector2D frictionForce = {0.0f, 0.0f};
-    float friction = u->frictionFrame + u->friction;
 
     /*Scale the forces*/
     u->seperationForce = vector_MultiplyBy(&u->seperationForce, u->steeringForce * u->seperationWeight);
@@ -231,13 +230,13 @@ static Vector2D vUnit_SteeringForce(Vent_Unit *u)
     vector_Clear(&u->seperationForce);
 
     /*Setup the friction force*/
-    frictionForce = vector_MultiplyBy(&u->velocity, -friction);
+    frictionForce = vector_MultiplyBy(&u->velocity, -u->friction);
 
     if(u->prevForce.x != netForce.x)
     {
         u->prevForce.x = netForce.x;
 
-        u->forceMaxSpeedX = fabs(netForce.x/friction);
+        u->forceMaxSpeedX = fabs(netForce.x/u->friction);
         u->steerFixX.x = u->forceMaxSpeedX/u->maxSpeed;
         u->steerFixX.y = 1/u->steerFixX.x;
     }
@@ -256,7 +255,7 @@ static Vector2D vUnit_SteeringForce(Vent_Unit *u)
     {
         u->prevForce.y = netForce.y;
 
-        u->forceMaxSpeedY = fabs(netForce.y/friction);
+        u->forceMaxSpeedY = fabs(netForce.y/u->friction);
         u->steerFixY.x = u->forceMaxSpeedY/u->maxSpeed;
         u->steerFixY.y = 1/u->steerFixY.x;
     }
@@ -272,8 +271,6 @@ static Vector2D vUnit_SteeringForce(Vent_Unit *u)
     }
 
     netForce = vector_Add(&netForce, &frictionForce);
-
-    u->frictionFrame = 0.0f;
 
     return netForce;
 }
@@ -293,10 +290,16 @@ static Vector2D vUnit_SteeringForce(Vent_Unit *u)
 int vUnit_Move(Vent_Unit *u, void *vg, float dt)
 {
     Vector2D netForce = {0.0f, 0.0f};
-    float maxSpeed = u->maxSpeed + u->maxSpeedFrame;
+    float maxSpeed = u->maxSpeed;
+    float friction = u->friction;
 
-    if(maxSpeed < 0.0f)
-        maxSpeed = 0.0f;
+    u->maxSpeed += u->maxSpeedFrame;
+    u->friction += u->frictionFrame;
+
+    if(u->maxSpeed < 0.0f)
+        u->maxSpeed = 0.0f;
+    if(u->friction < 0.0f)
+        u->friction = 0.0f;
 
     /*Set the previous unit position as the current one*/
     u->prevPosition = u->position;
@@ -320,22 +323,26 @@ int vUnit_Move(Vent_Unit *u, void *vg, float dt)
     u->velocity.y += netForce.y * dt;
 
     /*Keep at max speed*/
-    if(u->velocity.x > maxSpeed)
-        u->velocity.x = maxSpeed;
-    else if(u->velocity.x < -maxSpeed)
-        u->velocity.x = -maxSpeed;
+    if(u->velocity.x > u->maxSpeed)
+        u->velocity.x = u->maxSpeed;
+    else if(u->velocity.x < -u->maxSpeed)
+        u->velocity.x = -u->maxSpeed;
 
-    if(u->velocity.y > maxSpeed)
+    if(u->velocity.y > u->maxSpeed)
         u->velocity.y = u->maxSpeed;
-    else if(u->velocity.y < -maxSpeed)
-        u->velocity.y = -maxSpeed;
+    else if(u->velocity.y < -u->maxSpeed)
+        u->velocity.y = -u->maxSpeed;
 
     /*if(u->isPlayer)
         printf("UnitVel = %.2f %.2f\n", u->velocity.x, u->velocity.y);*/
 
     vUnit_SetDirection(u);
 
+    u->maxSpeed = maxSpeed;
+    u->friction = friction;
+
     u->maxSpeedFrame = 0.0f;
+    u->frictionFrame = 0.0f;
 
     return 0;
 }
@@ -437,8 +444,8 @@ void vUnit_TileCollision(Vent_Unit *u, void *t)
 
             if(u->layer != VL_AIR && tile->base.type == TILE_WATER)
             {
-                u->frictionFrame -=0.5f;
-                u->maxSpeedFrame -=20.0f;
+                u->frictionFrame =-0.5f;
+                u->maxSpeedFrame =-20.0f;
             }
         }
 
